@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "binary"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model items {
+  id                    Int         @id @default(autoincrement())
+  name                  String      @unique
+  category              category    @relation(fields: [categoryId], references: [id])
+  categoryId            Int
+  firstOptionQuestions  questions[] @relation("FirstItem")
+  secondOptionQuestions questions[] @relation("SecondItem")
+  imageURL              String
+  createdAt             DateTime?   @default(now())
+  updatedAt             DateTime?   @updatedAt
+}
+
+model questions {
+  id                        Int       @id @default(autoincrement())
+  firstItem                 items     @relation(name: "FirstItem", fields: [firstItemId], references: [id])
+  secondItem                items     @relation(name: "SecondItem", fields: [secondItemId], references: [id])
+  firstItemId               Int
+  secondItemId              Int
+  firstOptionAnsweredUsers  users[]   @relation(name: "FirstOption")
+  secondOptionAnsweredUsers users[]   @relation(name: "SecondOption")
+  createdAt                 DateTime? @default(now())
+  updatedAt                 DateTime? @updatedAt
+}
+
+model users {
+  id                               Int         @id @default(autoincrement())
+  username                         String      @unique
+  password                         String
+  score                            Int // skoða betur
+  firstOptionAnsweredQuestions     questions[] @relation(name: "FirstOption")
+  secondOptionAnsweredQuestions    questions[] @relation(name: "SecondOption")
+  firstOptionAnsweredQuestionsIds  Int[]
+  secondOptionAnsweredQuestionsIds Int[]
+  createdAt                        DateTime?   @default(now())
+  updatedAt                        DateTime?   @updatedAt
+
+  // number         String      @unique
+  // name           String      @unique
+  // units          Float
+  // semester       String
+  // level          String?
+  // url            String?
+  // department     departments @relation(references: [slug], fields: [departmentSlug], onDelete: Cascade)
+  // departmentSlug String
+  // slug           String      @unique
+}
+
+model category {
+  id           Int       @id @default(autoincrement())
+  items        items[]
+  description  String
+  questionText String
+  createdAt    DateTime? @default(now())
+  updatedAt    DateTime? @updatedAt
+  // number         String      @unique
+  // name           String      @unique
+  // units          Float
+  // semester       String
+  // level          String?
+  // url            String?
+  // department     departments @relation(references: [slug], fields: [departmentSlug], onDelete: Cascade)
+  // departmentSlug String
+  // slug           String      @unique
+}
