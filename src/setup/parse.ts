@@ -1,14 +1,15 @@
 import slugify from 'slugify';
 import { valueToSementer } from '../lib/mappers.js';
-import type { Course, DepartmentImport } from '../types.js';
+import type { Course, DepartmentImport, ItemImport } from '../types.js';
 
 /**
  * Parse JSON data representing index files.
  * @param input string with JSON data
  * @returns parsed list of files
  */
-export function parseJson(input: string): Array<DepartmentImport> {
+export function parseJson(input: string): Array<ItemImport> {
   let parsed: unknown;
+
   try {
     parsed = JSON.parse(input);
   } catch (e) {
@@ -20,17 +21,17 @@ export function parseJson(input: string): Array<DepartmentImport> {
     return [];
   }
 
-  const items: Array<DepartmentImport> = [];
+  const items: Array<ItemImport> = [];
+
   for (const i of parsed) {
-    const item = i as Partial<DepartmentImport>;
-    if (!item.title || !item.description || !item.csv) {
+    const item = i as Partial<ItemImport>;
+    if (!item.name || !item.categoryId || !item.imageURL) {
       console.warn('missing required properties in JSON');
     } else {
       items.push({
-        title: item.title,
-        slug: slugify(item.title).toLowerCase(),
-        description: item.description,
-        csv: item.csv,
+        name: item.name,
+        categoryId: item.categoryId,
+        imageURL: item.imageURL, 
       });
     }
   }

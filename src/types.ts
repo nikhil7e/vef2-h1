@@ -1,3 +1,9 @@
+export type ItemImport = {
+  name: string,
+  categoryId: number,
+  imageURL: string, 
+};
+
 export type DepartmentImport = {
   title: string;
   slug: string;

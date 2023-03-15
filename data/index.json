@@ -1,37 +1,22 @@
 [
   {
-    "title": "Hagfræðideild",
-    "description": "Menntun í Hagfræðideild er greiðasta leiðin til þátttöku, rannsókna og skilnings á hagkerfi okkar. Kennslan stendur á sterkum grunni og er markmið námsins að veita nemendum góðan undirbúning í hagfræði, stærðfræði og tölfræði og möguleika á sérhæfingu í öðrum greinum.",
-    "csv": "hagfraedi.csv"
+    "name": "Nocco: Miami Strawberry",
+    "categoryId": 1,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/c_lfill,h_1000,w_1000/Nocco:%20Miami%20Strawberry"
   },
   {
-    "title": "Iðnaðarverkfræði-, vélaverkfræði- og tölvunarfræðideild",
-    "description": "Deildin býður upp á fjölbreytt námsframboð verkfræði- og tölvunarfræðigreina. Þessar greinar eiga það sameiginlegt að vera afar hagnýtar og þýðingarmiklar við uppbyggingu og rekstur nútíma þjóðfélaga.",
-    "csv": "ivt.csv"
+    "name": "Monster Energy: Zero Ultra",
+    "categoryId": 1,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/c_lfill,h_1000,w_1000/Monster%20Energy:%20Zero%20Ultra"
   },
   {
-    "title": "Íslensku og menningardeild",
-    "description": "Íslensku- og menningardeild er ein fjögurra deilda á Hugvísindasviði og er ein sú fjölmennasta innan Háskólans. Í deildinni eru nú kenndar milli 10 og 20 greinar, sumar bæði á grunn- og framhaldsstigi, en sumar eingöngu í grunnnámi og aðrar eingöngu í framhaldsnámi.",
-    "csv": "islenska.csv"
+    "name": "Collab: Límónu og Ylliblóma",
+    "categoryId": 1,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/c_lfill,h_1000,w_1000/Collab:%20L%C3%ADm%C3%B3nu%20og%20Yllibl%C3%B3ma"
   },
   {
-    "title": "Læknadeild",
-    "description": "Læknadeild annast kennslu og rannsóknir í geislafræði, heilbrigðisgagnafræði, lífeindafræði, læknisfræði og sjúkraþjálfunarfræði. Deildin starfar í nánu samstarfi við Landspítala og fleiri heilbrigðisstofnanir innanlands og utan. Læknadeild er leiðandi í kennslu og rannsóknum í heilbrigðisvísindum hér á landi.",
-    "csv": "laeknadeild.csv"
-  },
-  {
-    "title": "Sálfræðideild",
-    "description": "Sálfræði er vísindagrein um huga, heila og hátterni. Grundvöllur sálfræðinnar er fjölbreytilegt rannsóknastarf en greinin er víða hagnýtt, meðal annars í skólum, meðferðarstarfi og atvinnulífi.",
-    "csv": "salfraedideild.csv"
-  },
-  {
-    "title": "Stjórnmálafræði",
-    "description": "Stjórnmálafræðideild býður upp á fjölbreytta námsmöguleika bæði í grunn- og framhaldsnámi. Námið veitir útskrifuðum nemendum ótal möguleika á að velja sér starf að námi loknu og stjórnmálafræðingar hafa haslað sér völl víðs vegar í atvinnulífinu á undanförnum árum.",
-    "csv": "stjornmalafraedi.csv"
-  },
-  {
-    "title": "Viðskiptafræði",
-    "description": "Viðskiptafræðideild hefur gegnt forystuhlutverki í menntun stjórnenda og sérfræðinga á sviði viðskiptafræði í áratugi. Deildin hefur lagt metnað sinn í að miðla alþjóðlega viðurkenndri þekkingu með því að vera leiðandi í rannsóknum, kennslu og þjónustu við íslenskt atvinnulíf.",
-    "csv": "vidskiptafraedi.csv"
+    "name": "Red Bull Sugar Free",
+    "categoryId": 1,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/c_lfill,h_1000,w_1000/Red%20Bull%20Sugar%20Free"
   }
 ]
