@@ -1,18 +1,16 @@
+import { PrismaClient, users } from '@prisma/client';
 import dotenv from 'dotenv';
 import express, { NextFunction, Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
+import passport from 'passport';
+import { ExtractJwt, Strategy } from 'passport-jwt';
 import { cors } from './lib/cors.js';
 import { router } from './routes/api.js';
-import PrismaClient from '@prisma/client';
-import passport from 'passport';
-import { Strategy, ExtractJwt } from 'passport-jwt';
-import jwt from 'jsonwebtoken';
 
-import {
-  comparePasswords,
-  findByUsername,
-  findById,
-} from './users.js';
-//TODO: Implement user.ts
+import { comparePasswords, findById, findByUsername } from './lib/users.js';
+
+const prisma = new PrismaClient();
+// TODO: Implement user.ts
 
 dotenv.config();
 
@@ -40,14 +38,16 @@ const jwtOptions = {
   secretOrKey: jwtSecret,
 };
 
-async function strat(data : any, next : NextFunction) {
+async function strat(data: any, next: NextFunction) {
   // fáum id gegnum data sem geymt er í token
   const user = await findById(data.id);
 
   if (user) {
-    next(null, user);
+    // next(null, user);
+    next(user);
   } else {
-    next(null, false);
+    // next(null, false);
+    next(false);
   }
 }
 
@@ -83,18 +83,22 @@ app.post('/login', async (req, res) => {
   return res.status(401).json({ error: 'Invalid password' });
 });
 
-function requireAuthentication(req, res, next) {
+function requireAuthentication(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   return passport.authenticate(
     'jwt',
     { session: false },
-    (err, user, info) => {
+    (err: Error, user: users, info: any) => {
       if (err) {
         return next(err);
       }
 
       if (!user) {
-        const error = info.name === 'TokenExpiredError'
-          ? 'expired token' : 'invalid token';
+        const error =
+          info.name === 'TokenExpiredError' ? 'expired token' : 'invalid token';
 
         return res.status(401).json({ error });
       }
@@ -102,14 +106,13 @@ function requireAuthentication(req, res, next) {
       // Látum notanda vera aðgengilegan í rest af middlewares
       req.user = user;
       return next();
-    },
+    }
   )(req, res, next);
 }
 
 app.get('/admin', requireAuthentication, (req, res) => {
   res.json({ data: 'top secret' });
 });
-
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);
