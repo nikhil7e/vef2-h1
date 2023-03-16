@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import express, { NextFunction, Request, Response } from 'express';
 import { cors } from './lib/cors.js';
 import { router } from './routes/api.js';
-
+import PrismaClient from '@prisma/client';
 import passport from 'passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
 import jwt from 'jsonwebtoken';
@@ -45,7 +45,7 @@ async function strat(data : any, next : NextFunction) {
   const user = await findById(data.id);
 
   if (user) {
-    next(null, user : user);
+    next(null, user);
   } else {
     next(null, false);
   }
