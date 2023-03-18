@@ -4,7 +4,7 @@ import { requireAdminAuthentication } from './users.js';
 
 const prisma = new PrismaClient();
 
-async function getUsersHandler(req: Request, res: Response) {
+async function getItemsHandler(req: Request, res: Response) {
   const items = await prisma.items.findMany({
     where: {},
   });
@@ -16,4 +16,4 @@ async function getUsersHandler(req: Request, res: Response) {
   return res.status(200).json(items);
 }
 
-export const getItems = [requireAdminAuthentication, getUsersHandler];
+export const getItems = [requireAdminAuthentication, getItemsHandler];
