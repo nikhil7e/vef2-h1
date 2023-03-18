@@ -13,7 +13,7 @@ import {
   listDepartments,
   updateDepartment,
 } from './departments.js';
-import { getAdminDetails, getUsers, login, signup } from './users.js';
+import { getAdminDetails, getUser, getUsers, login, signup } from './users.js';
 
 export const router = express.Router();
 
@@ -40,10 +40,11 @@ export async function index(req: Request, res: Response) {
 router.get('/', index);
 
 // Users
+router.get('/users', getUsers);
+router.get('/users/:userId', getUser);
 router.post('/login', login);
 router.post('/signup', signup);
 router.get('/admin', getAdminDetails);
-router.get('/users', getUsers);
 
 // Items
 

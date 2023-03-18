@@ -183,3 +183,19 @@ async function getUsersHandler(req: Request, res: Response) {
 }
 
 export const getUsers = [requireAdminAuthentication, getUsersHandler];
+
+async function getUserHandler(req: Request, res: Response) {
+  const { userId } = req.params;
+
+  const user = await prisma.users.findUnique({
+    where: { id: Number.parseInt(userId, 10) },
+  });
+
+  if (!user) {
+    return res.status(201).json({ error: 'No users exist' });
+  }
+
+  return res.status(200).json(user);
+}
+
+export const getUser = [requireAdminAuthentication, getUserHandler];
