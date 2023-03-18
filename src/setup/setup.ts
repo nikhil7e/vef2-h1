@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
@@ -57,10 +58,12 @@ async function setup() {
     },
   });
 
+  const hashedPassword = await bcrypt.hash('123', 11);
+
   const adminUser = await prisma.users.create({
     data: {
       username: 'admin',
-      password: '123',
+      password: hashedPassword,
       admin: true,
     },
   });
