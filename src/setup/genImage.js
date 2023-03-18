@@ -1,5 +1,5 @@
-import imageSearch from 'image-search-google';
 import cloudinary from 'cloudinary';
+import { imageSearch as ImageSearch } from 'image-search-google';
 
 export function getImageUrl(query) {
   // Configuration
@@ -9,7 +9,10 @@ export function getImageUrl(query) {
     api_secret: '46llmCbx6ObdDp2AoO1rrRta_98',
   });
 
-  const client = new imageSearch('141e92719bab94a1c', 'AIzaSyDG7M8Y7oSIjAAlbJ_WLHkBAlBbc6XSVXA');
+  const client = new ImageSearch(
+    '141e92719bab94a1c',
+    'AIzaSyDG7M8Y7oSIjAAlbJ_WLHkBAlBbc6XSVXA'
+  );
   const options = { size: 'large', num: 1 };
   client
     .search(query, options)
@@ -21,10 +24,12 @@ export function getImageUrl(query) {
       //     'context': item.image.contextLink
       // }]
 
-      let imageUrl = images[0].url;
+      const imageUrl = images[0].url;
 
       // Upload
-      const res = cloudinary.uploader.upload(imageUrl, { public_id: 'testMynd' });
+      const res = cloudinary.uploader.upload(imageUrl, {
+        public_id: 'testMynd',
+      });
 
       res
         .then((data) => {

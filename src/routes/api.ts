@@ -13,6 +13,8 @@ import {
   listDepartments,
   updateDepartment,
 } from './departments.js';
+import { getItems } from './items.js';
+import { getQuestions } from './questions.js';
 import { getAdminDetails, getUser, getUsers, login, signup } from './users.js';
 
 export const router = express.Router();
@@ -44,11 +46,14 @@ router.get('/users', getUsers);
 router.get('/users/:userId', getUser);
 router.post('/login', login);
 router.post('/signup', signup);
-router.get('/admin', getAdminDetails);
+router.get('/admin', getAdminDetails); // Hvað á getAdminDetails að gera?
 
 // Items
+router.get('/items', getItems);
+// router.post('/items', createItem); TODO, þarf að nota skránna hans tomma fyrir imgURL
 
 // Questions
+router.get('/questions', getQuestions);
 
 // Categories
 
