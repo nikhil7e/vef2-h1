@@ -50,14 +50,23 @@ async function setup() {
   const indexFile = await readFile(join(DATA_DIR, 'index.json'));
   const indexData = parseJson(indexFile.toString('utf-8'));
 
-  const cat = await prisma.category.create({
+  const testCategory = await prisma.category.create({
     data: {
-      questionText: 't',
-      description: 'e',
+      questionText: 'text',
+      description: 'desc',
+    },
+  });
+
+  const adminUser = await prisma.users.create({
+    data: {
+      username: 'admin',
+      password: '123',
+      admin: true,
     },
   });
 
   for (const item of indexData) {
+    // eslint-disable-next-line no-await-in-loop
     const itemToInsert = await prisma.items.create({
       data: {
         name: item.name,

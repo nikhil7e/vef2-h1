@@ -37,9 +37,10 @@ model questions {
 
 model users {
   id                               Int         @id @default(autoincrement())
+  admin                            Boolean     @default(false)
   username                         String      @unique
   password                         String
-  score                            Int // skoða betur
+  score                            Int         @default(0) // skoða betur
   firstOptionAnsweredQuestions     questions[] @relation(name: "FirstOption")
   secondOptionAnsweredQuestions    questions[] @relation(name: "SecondOption")
   firstOptionAnsweredQuestionsIds  Int[]

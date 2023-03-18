@@ -37,6 +37,8 @@ export async function index(req: Request, res: Response) {
   ]);
 }
 
+// TODO: Færa routes úr app.ts hingað
+
 // Departments
 router.get('/', index);
 router.get('/departments', listDepartments);
