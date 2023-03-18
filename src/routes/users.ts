@@ -169,3 +169,17 @@ export const getAdminDetails = [
   requireAdminAuthentication,
   getAdminDetailsHandler,
 ];
+
+async function getUsersHandler(req: Request, res: Response) {
+  const user = await prisma.users.findMany({
+    where: {},
+  });
+
+  if (!user) {
+    return res.status(201).json({ error: 'No users exist' });
+  }
+
+  return res.status(200).json(user);
+}
+
+export const getUsers = [requireAdminAuthentication, getUsersHandler];

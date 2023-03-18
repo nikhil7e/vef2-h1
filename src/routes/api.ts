@@ -13,7 +13,7 @@ import {
   listDepartments,
   updateDepartment,
 } from './departments.js';
-import { getAdminDetails, login, signup } from './users.js';
+import { getAdminDetails, getUsers, login, signup } from './users.js';
 
 export const router = express.Router();
 
@@ -43,6 +43,13 @@ router.get('/', index);
 router.post('/login', login);
 router.post('/signup', signup);
 router.get('/admin', getAdminDetails);
+router.get('/users', getUsers);
+
+// Items
+
+// Questions
+
+// Categories
 
 // Departments
 router.get('/departments', listDepartments);
