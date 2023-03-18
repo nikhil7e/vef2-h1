@@ -11,10 +11,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// einmitt núna er bara eitt category per item!
 model items {
   id                    Int         @id @default(autoincrement())
   name                  String      @unique
-  category              category    @relation(fields: [categoryId], references: [id])
+  category              category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId            Int
   firstOptionQuestions  questions[] @relation("FirstItem")
   secondOptionQuestions questions[] @relation("SecondItem")
@@ -25,16 +26,19 @@ model items {
 
 model questions {
   id                        Int       @id @default(autoincrement())
-  firstItem                 items     @relation(name: "FirstItem", fields: [firstItemId], references: [id])
-  secondItem                items     @relation(name: "SecondItem", fields: [secondItemId], references: [id])
+  firstItem                 items     @relation(name: "FirstItem", fields: [firstItemId], references: [id], onDelete: Cascade)
+  secondItem                items     @relation(name: "SecondItem", fields: [secondItemId], references: [id], onDelete: Cascade)
   firstItemId               Int
   secondItemId              Int
+  category                  category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId                Int
   firstOptionAnsweredUsers  users[]   @relation(name: "FirstOption")
   secondOptionAnsweredUsers users[]   @relation(name: "SecondOption")
   createdAt                 DateTime? @default(now())
   updatedAt                 DateTime? @updatedAt
 }
 
+// ef við deleteum user eyðast svörin þeirra ekki eins og er!
 model users {
   id                               Int         @id @default(autoincrement())
   admin                            Boolean     @default(false)
@@ -60,12 +64,13 @@ model users {
 }
 
 model category {
-  id           Int       @id @default(autoincrement())
+  id           Int         @id @default(autoincrement())
   items        items[]
+  questions    questions[]
   description  String
   questionText String
-  createdAt    DateTime? @default(now())
-  updatedAt    DateTime? @updatedAt
+  createdAt    DateTime?   @default(now())
+  updatedAt    DateTime?   @updatedAt
   // number         String      @unique
   // name           String      @unique
   // units          Float

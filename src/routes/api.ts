@@ -15,7 +15,7 @@ import {
   updateDepartment,
 } from './departments.js';
 import { createItem, getItems } from './items.js';
-import { getQuestions } from './questions.js';
+import { getQuestion, getQuestions } from './questions.js';
 import { getAdminDetails, getUser, getUsers, login, signup } from './users.js';
 
 export const router = express.Router();
@@ -55,6 +55,7 @@ router.post('/items', createItem); // TODO, þarf að nota skránna hans tomma f
 
 // Questions
 router.get('/questions', getQuestions);
+router.get('/questions/:questionId', getQuestion);
 
 // Categories
 router.get('/categories', getCategories);
