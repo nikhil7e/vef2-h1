@@ -29,6 +29,7 @@
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "pg": "^8.9.0",
+    "simple-google-image-search": "^1.2.0",
     "slugify": "^1.6.5",
     "ts-node": "^10.9.1",
     "xss": "^1.0.14"

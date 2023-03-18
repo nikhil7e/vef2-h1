@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { category, PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import { requireAdminAuthentication } from './users.js';
 
@@ -17,3 +17,21 @@ async function getCategoriesHandler(req: Request, res: Response) {
 }
 
 export const getCategories = [requireAdminAuthentication, getCategoriesHandler];
+
+export async function getCategoryById(id: number): Promise<category | null> {
+  let categoryToSearch;
+
+  try {
+    categoryToSearch = await prisma.category.findFirst({
+      where: { id },
+    });
+  } catch {
+    return null;
+  }
+
+  if (!categoryToSearch) {
+    return null;
+  }
+
+  return categoryToSearch;
+}

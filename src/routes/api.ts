@@ -14,7 +14,7 @@ import {
   listDepartments,
   updateDepartment,
 } from './departments.js';
-import { getItems } from './items.js';
+import { createItem, getItems } from './items.js';
 import { getQuestions } from './questions.js';
 import { getAdminDetails, getUser, getUsers, login, signup } from './users.js';
 
@@ -51,7 +51,7 @@ router.get('/admin', getAdminDetails); // Hvað á getAdminDetails að gera?
 
 // Items
 router.get('/items', getItems);
-// router.post('/items', createItem); TODO, þarf að nota skránna hans tomma fyrir imgURL
+router.post('/items', createItem); // TODO, þarf að nota skránna hans tomma fyrir imgURL
 
 // Questions
 router.get('/questions', getQuestions);

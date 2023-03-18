@@ -6,8 +6,15 @@
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": true
   },
-  "include": ["**/*.ts", "src/lib/validation.ts"],
+  "include": [
+    "**/*.ts",
+    "src/lib/validation.ts",
+    "index.d.ts",
+    "src/setup/genImage.js",
+    "src/setup/genImage.js"
+  ],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }
