@@ -1,7 +1,9 @@
+import { items, PrismaClient } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import slugify from 'slugify';
 import xss from 'xss';
+import { getCategoryById } from '../routes/categories.js';
 import { ALLOWED_SEMESTERS } from '../types.js';
 
 import {
@@ -9,6 +11,8 @@ import {
   getCourseByTitle,
   getDepartmentBySlug,
 } from './db.js';
+
+const prisma = new PrismaClient();
 
 /**
  * Checks to see if there are validation errors or returns next middlware if not.
@@ -20,7 +24,7 @@ import {
 export function validationCheck(
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) {
   const validation = validationResult(req);
   if (!validation.isEmpty()) {
@@ -42,6 +46,18 @@ export function validationCheck(
   return next();
 }
 
+export async function getItemByName(name: string): Promise<items | null> {
+  const item = await prisma.items.findUnique({
+    where: { name },
+  });
+
+  if (!item) {
+    return null;
+  }
+
+  return item;
+}
+
 export function atLeastOneBodyValueValidator(fields: Array<string>) {
   return body().custom(async (value, { req }) => {
     const { body: reqBody } = req;
@@ -59,7 +75,7 @@ export function atLeastOneBodyValueValidator(fields: Array<string>) {
 
     if (!valid) {
       return Promise.reject(
-        new Error(`require at least one value of: ${fields.join(', ')}`),
+        new Error(`require at least one value of: ${fields.join(', ')}`)
       );
     }
     return Promise.resolve();
@@ -88,7 +104,7 @@ export const stringValidator = ({
     .isString()
     .isLength({
       min: valueRequired ? 1 : undefined,
-      max: maxLength ? maxLength : undefined,
+      max: maxLength || undefined,
     })
     .withMessage(
       [
@@ -97,7 +113,7 @@ export const stringValidator = ({
         maxLength ? `max ${maxLength} characters` : '',
       ]
         .filter((i) => Boolean(i))
-        .join(' '),
+        .join(' ')
     );
 
   if (optional) {
@@ -122,7 +138,7 @@ export const departmentDoesNotExistValidator = body('title').custom(
       return Promise.reject(new Error('department with title already exists'));
     }
     return Promise.resolve();
-  },
+  }
 );
 
 export const courseTitleDoesNotExistValidator = body('title').custom(
@@ -131,7 +147,7 @@ export const courseTitleDoesNotExistValidator = body('title').custom(
       return Promise.reject(new Error('course with title already exists'));
     }
     return Promise.resolve();
-  },
+  }
 );
 
 export const courseIdDoesNotExistValidator = body('courseId').custom(
@@ -140,5 +156,23 @@ export const courseIdDoesNotExistValidator = body('courseId').custom(
       return Promise.reject(new Error('course with courseId already exists'));
     }
     return Promise.resolve();
-  },
+  }
+);
+
+export const itemNameDoesNotExistValidator = body('name').custom(
+  async (name) => {
+    if (await getItemByName(name)) {
+      return Promise.reject(new Error('item with name already exists'));
+    }
+    return Promise.resolve();
+  }
+);
+
+export const categoryIdDoesExistValidator = body('categoryId').custom(
+  async (id) => {
+    if (!(await getCategoryById(id))) {
+      return Promise.reject(new Error('category with id does not exist'));
+    }
+    return Promise.resolve();
+  }
 );
