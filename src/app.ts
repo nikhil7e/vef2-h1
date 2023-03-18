@@ -1,17 +1,11 @@
-import { users } from '@prisma/client';
 import dotenv from 'dotenv';
-import express, { NextFunction, Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
+import express, { Request, Response } from 'express';
 import passport from 'passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { cors } from './lib/cors.js';
+import { router } from './routes/api.js';
 
-import {
-  comparePasswords,
-  createUser,
-  findById,
-  findByUsername,
-} from './lib/users.js';
+import { findById } from './routes/users.js';
 
 dotenv.config();
 
@@ -32,7 +26,7 @@ const app = express();
 app.use(express.json());
 
 app.use(cors);
-// app.use(router);
+app.use(router);
 
 const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -73,117 +67,6 @@ passport.use(new Strategy(jwtOptions, strat));
 
 app.use(passport.initialize());
 
-app.get('/', (req, res) => {
-  res.json({
-    login: '/login',
-    admin: '/admin',
-  });
-});
-
-app.post('/login', async (req, res) => {
-  const { username, password = '' } = req.body;
-
-  const user = await findByUsername(username);
-
-  if (!user) {
-    return res.status(401).json({ error: 'No such user' });
-  }
-
-  const passwordIsCorrect = await comparePasswords(password, user.password);
-
-  if (passwordIsCorrect) {
-    const payload = { id: user.id };
-    const tokenOptions = { expiresIn: tokenLifetime };
-    const token = jwt.sign(payload, jwtOptions.secretOrKey, tokenOptions);
-    return res.json({ token });
-  }
-
-  return res.status(401).json({ error: 'Invalid password' });
-});
-
-app.post('/signup', async (req, res) => {
-  const { username, password = '' } = req.body;
-
-  const user = await createUser(username, password);
-
-  if (!user) {
-    return res.status(400).json({ error: 'Could not create user' });
-  }
-
-  const payload = { id: user.id };
-  const tokenOptions = { expiresIn: tokenLifetime };
-  const token = jwt.sign(payload, jwtOptions.secretOrKey, tokenOptions);
-  return res.json({ token });
-});
-
-function requireAuthentication(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  return passport.authenticate(
-    'jwt',
-    { session: false },
-    (err: Error, user: users, info: any) => {
-      if (err) {
-        return next(err);
-      }
-
-      if (!user) {
-        const error =
-          info?.name === 'TokenExpiredError'
-            ? 'expired token'
-            : 'invalid token';
-
-        return res.status(401).json({ error });
-      }
-
-      // Látum notanda vera aðgengilegan í rest af middlewares
-      req.user = user;
-      return next();
-    }
-  )(req, res, next);
-}
-
-function requireAdminAuthentication(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  return passport.authenticate(
-    'jwt',
-    { session: false },
-    (err: Error, user: users, info: any) => {
-      if (err) {
-        return next(err);
-      }
-
-      if (!user) {
-        const error =
-          info?.name === 'TokenExpiredError'
-            ? 'expired token'
-            : 'invalid token';
-
-        return res.status(401).json({ error });
-      }
-
-      if (!user.admin) {
-        const error = 'unauthorized admin access';
-
-        return res.status(401).json({ error });
-      }
-
-      // Látum notanda vera aðgengilegan í rest af middlewares
-      req.user = user;
-      return next();
-    }
-  )(req, res, next);
-}
-
-app.get('/admin', requireAdminAuthentication, (req, res) => {
-  res.json({ data: 'top secret' });
-});
-
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);
 });
@@ -193,7 +76,7 @@ app.use((req: Request, res: Response) => {
 });
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+app.use((err: Error, req: Request, res: Response) => {
   if (
     err instanceof SyntaxError &&
     'status' in err &&

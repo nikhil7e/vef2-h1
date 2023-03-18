@@ -13,34 +13,38 @@ import {
   listDepartments,
   updateDepartment,
 } from './departments.js';
+import { getAdminDetails, login, signup } from './users.js';
 
 export const router = express.Router();
 
 export async function index(req: Request, res: Response) {
+  // TODO: Fylla út eventually
+
   return res.json([
     {
-      href: '/departments',
-      methods: ['GET', 'POST'],
+      href: '/login',
+      methods: ['POST'],
     },
     {
-      href: '/departments/:slug',
-      methods: ['GET', 'PATCH', 'DELETE'],
+      href: '/signup',
+      methods: ['POST'],
     },
     {
-      href: '/departments/:slug/courses',
-      methods: ['GET', 'POST'],
-    },
-    {
-      href: '/departments/:slug/courses/:courseId',
-      methods: ['GET', 'PATCH', 'DELETE'],
+      href: '/admin',
+      methods: ['GET'],
     },
   ]);
 }
 
 // TODO: Færa routes úr app.ts hingað
+router.get('/', index);
+
+// Users
+router.post('/login', login);
+router.post('/signup', signup);
+router.get('/admin', getAdminDetails);
 
 // Departments
-router.get('/', index);
 router.get('/departments', listDepartments);
 router.post('/departments', createDepartment);
 router.get('/departments/:slug', getDepartment);
