@@ -1,14 +1,16 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, users } from '@prisma/client';
 import { Request, Response } from 'express';
 import {
   categoryIdDoesExistValidator,
   genericSanitizerMany,
+  itemIdDoesExistValidator,
   questionIdDoesExistValidator,
   stringValidator,
+  userHasNotVotedForQuestionValidator,
   validationCheck,
   xssSanitizerMany,
 } from '../lib/validation.js';
-import { requireAdminAuthentication } from './users.js';
+import { requireAdminAuthentication, requireAuthentication } from './users.js';
 
 const prisma = new PrismaClient();
 
@@ -149,4 +151,72 @@ export const deleteQuestion = [
   questionIdDoesExistValidator,
   validationCheck,
   deleteQuestionHandler,
+];
+
+async function voteItemHandler(req: Request, res: Response) {
+  const { questionId, itemId } = req.params;
+
+  const qId = Number.parseInt(questionId, 10);
+  const iId = Number.parseInt(itemId, 10);
+
+  const question = await prisma.questions.findFirst({
+    where: { id: qId },
+  });
+
+  const user = req.user as users;
+
+  let questionUpdated;
+
+  if (question?.firstItemId === iId) {
+    questionUpdated = await prisma.questions.update({
+      where: { id: qId },
+      data: {
+        firstOptionAnsweredUserIds: {
+          push: user.id,
+        },
+        firstOptionAnsweredUsers: {
+          connect: {
+            id: user.id,
+          },
+        },
+      },
+      include: {
+        firstOptionAnsweredUsers: true,
+      },
+    });
+  } else if (question?.secondItemId === iId) {
+    questionUpdated = await prisma.questions.update({
+      where: { id: qId },
+      data: {
+        secondOptionAnsweredUserIds: {
+          push: user.id,
+        },
+        secondOptionAnsweredUsers: {
+          connect: {
+            id: user.id,
+          },
+        },
+      },
+      include: {
+        secondOptionAnsweredUsers: true,
+      },
+    });
+  }
+
+  if (!questionUpdated) {
+    return res
+      .status(404)
+      .json({ error: 'could not update question (vote failed)' });
+  }
+
+  return res.status(200).json(questionUpdated);
+}
+
+export const voteItem = [
+  requireAuthentication,
+  questionIdDoesExistValidator,
+  itemIdDoesExistValidator,
+  userHasNotVotedForQuestionValidator,
+  validationCheck,
+  voteItemHandler,
 ];

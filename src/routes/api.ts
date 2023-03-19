@@ -25,6 +25,7 @@ import {
   deleteQuestion,
   getQuestion,
   getQuestions,
+  voteItem,
 } from './questions.js';
 import {
   deleteUser,
@@ -38,7 +39,7 @@ import {
 export const router = express.Router();
 
 export async function index(req: Request, res: Response) {
-  // TODO: Fylla út eventually
+  // TODO: Fylla út með PATCH
 
   return res.json([
     {
@@ -52,6 +53,42 @@ export async function index(req: Request, res: Response) {
     {
       href: '/admin',
       methods: ['GET'],
+    },
+    {
+      href: '/users',
+      methods: ['GET', 'POST'],
+    },
+    {
+      href: '/users/:userId',
+      methods: ['GET', 'DELETE'],
+    },
+    {
+      href: '/items',
+      methods: ['GET', 'POST'],
+    },
+    {
+      href: '/items/:itemId',
+      methods: ['GET', 'DELETE'],
+    },
+    {
+      href: '/questions',
+      methods: ['GET', 'POST'],
+    },
+    {
+      href: '/questions/:questionId',
+      methods: ['GET', 'DELETE'],
+    },
+    {
+      href: '/questions/:questionId/:itemId',
+      methods: ['POST'],
+    },
+    {
+      href: '/categories',
+      methods: ['GET', 'POST'],
+    },
+    {
+      href: '/categories/:categoryId',
+      methods: ['GET', 'DELETE'],
     },
   ]);
 }
@@ -75,6 +112,7 @@ router.delete('/items/:itemId', deleteItem);
 // Questions
 router.get('/questions', getQuestions);
 router.get('/questions/:questionId', getQuestion);
+router.post('/questions/:questionId/:itemId', voteItem);
 router.post('/questions', createQuestion);
 router.delete('/questions/:questionId', deleteQuestion);
 
