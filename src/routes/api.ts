@@ -14,8 +14,8 @@ import {
   listDepartments,
   updateDepartment,
 } from './departments.js';
-import { createItem, getItems } from './items.js';
-import { getQuestion, getQuestions } from './questions.js';
+import { createItem, getItem, getItems } from './items.js';
+import { createQuestion, getQuestion, getQuestions } from './questions.js';
 import { getAdminDetails, getUser, getUsers, login, signup } from './users.js';
 
 export const router = express.Router();
@@ -39,7 +39,6 @@ export async function index(req: Request, res: Response) {
   ]);
 }
 
-// TODO: Færa routes úr app.ts hingað
 router.get('/', index);
 
 // Users
@@ -51,11 +50,13 @@ router.get('/admin', getAdminDetails); // Hvað á getAdminDetails að gera?
 
 // Items
 router.get('/items', getItems);
+router.get('/items/:itemId', getItem);
 router.post('/items', createItem); // TODO, þarf að nota skránna hans tomma fyrir imgURL
 
 // Questions
 router.get('/questions', getQuestions);
 router.get('/questions/:questionId', getQuestion);
+router.post('/questions', createQuestion);
 
 // Categories
 router.get('/categories', getCategories);

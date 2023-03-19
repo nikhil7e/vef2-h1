@@ -29,6 +29,24 @@ async function getItemsHandler(req: Request, res: Response) {
 
 export const getItems = [requireAdminAuthentication, getItemsHandler];
 
+async function getItemHandler(req: Request, res: Response) {
+  const { itemId } = req.params;
+
+  const id = Number.parseInt(itemId, 10);
+
+  const item = await prisma.items.findUnique({
+    where: { id },
+  });
+
+  if (!item) {
+    return res.status(404).json({ error: 'Item with itemId does not exist' });
+  }
+
+  return res.status(200).json(item);
+}
+
+export const getItem = [requireAdminAuthentication, getItemHandler];
+
 async function createItemHandler(req: Request, res: Response) {
   const { name, categoryId } = req.body;
 
