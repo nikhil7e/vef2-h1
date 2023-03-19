@@ -25,17 +25,19 @@ model items {
 }
 
 model questions {
-  id                        Int       @id @default(autoincrement())
-  firstItem                 items     @relation(name: "FirstItem", fields: [firstItemId], references: [id], onDelete: Cascade)
-  secondItem                items     @relation(name: "SecondItem", fields: [secondItemId], references: [id], onDelete: Cascade)
-  firstItemId               Int
-  secondItemId              Int
-  category                  category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  categoryId                Int
-  firstOptionAnsweredUsers  users[]   @relation(name: "FirstOption")
-  secondOptionAnsweredUsers users[]   @relation(name: "SecondOption")
-  createdAt                 DateTime? @default(now())
-  updatedAt                 DateTime? @updatedAt
+  id                          Int       @id @default(autoincrement())
+  firstItem                   items     @relation(name: "FirstItem", fields: [firstItemId], references: [id], onDelete: Cascade)
+  secondItem                  items     @relation(name: "SecondItem", fields: [secondItemId], references: [id], onDelete: Cascade)
+  firstItemId                 Int
+  secondItemId                Int
+  category                    category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId                  Int
+  firstOptionAnsweredUsers    users[]   @relation(name: "FirstOption")
+  secondOptionAnsweredUsers   users[]   @relation(name: "SecondOption")
+  firstOptionAnsweredUserIds  Int[]
+  secondOptionAnsweredUserIds Int[]
+  createdAt                   DateTime? @default(now())
+  updatedAt                   DateTime? @updatedAt
 }
 
 // ef við deleteum user eyðast svörin þeirra ekki eins og er!

@@ -317,3 +317,37 @@ export const userIdDoesExistValidator = param('userId').custom(async (id) => {
   }
   return Promise.resolve();
 });
+
+export const userHasNotVotedForQuestionValidator = param().custom(
+  async (values, { req }) => {
+    console.log(values);
+    const questionId = Number.parseInt(values.questionId, 10);
+    const itemId = Number.parseInt(values.itemId, 10);
+    console.log(questionId, itemId);
+
+    const questionToSearch = await getQuestionById(questionId);
+    if (!questionToSearch) {
+      return Promise.reject(new Error('question with id does not exist'));
+    }
+
+    if (
+      questionToSearch.firstItemId !== itemId &&
+      questionToSearch.secondItemId !== itemId
+    ) {
+      return Promise.reject(
+        new Error('item with id does not exist in this question')
+      );
+    }
+    const { user } = req;
+    if (
+      questionToSearch.firstOptionAnsweredUserIds.includes(user.id) ||
+      questionToSearch.secondOptionAnsweredUserIds.includes(user.id)
+    ) {
+      return Promise.reject(
+        new Error('User has already voted for this question')
+      );
+    }
+
+    return Promise.resolve();
+  }
+);
