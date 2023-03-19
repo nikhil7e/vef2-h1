@@ -52,8 +52,6 @@ async function createItemHandler(req: Request, res: Response) {
 
   const imageURL = await getImageUrl(name);
 
-  console.log('RGwqgewgqwg', imageURL);
-
   const item = await prisma.items.create({
     data: {
       name,

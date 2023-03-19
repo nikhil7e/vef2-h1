@@ -1,9 +1,8 @@
-import { items, PrismaClient } from '@prisma/client';
+import { category, items, PrismaClient } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import slugify from 'slugify';
 import xss from 'xss';
-import { getCategoryById } from '../routes/categories.js';
 import { ALLOWED_SEMESTERS } from '../types.js';
 
 import {
@@ -56,6 +55,24 @@ export async function getItemByName(name: string): Promise<items | null> {
   }
 
   return item;
+}
+
+export async function getCategoryById(id: number): Promise<category | null> {
+  let categoryToSearch;
+
+  try {
+    categoryToSearch = await prisma.category.findFirst({
+      where: { id },
+    });
+  } catch {
+    return null;
+  }
+
+  if (!categoryToSearch) {
+    return null;
+  }
+
+  return categoryToSearch;
 }
 
 export function atLeastOneBodyValueValidator(fields: Array<string>) {

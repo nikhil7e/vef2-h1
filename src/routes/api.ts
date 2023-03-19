@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { getCategories } from './categories.js';
+import { createCategory, getCategories, getCategory } from './categories.js';
 import {
   createCourse,
   deleteCourse,
@@ -60,6 +60,8 @@ router.post('/questions', createQuestion);
 
 // Categories
 router.get('/categories', getCategories);
+router.get('/categories/:categoryId', getCategory);
+router.post('/categories', createCategory);
 
 // Departments
 router.get('/departments', listDepartments);

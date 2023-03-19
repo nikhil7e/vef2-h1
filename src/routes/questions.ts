@@ -54,7 +54,7 @@ async function createQuestionHandler(req: Request, res: Response) {
 
   const itemsCount = await prisma.items.count({ where: { categoryId } });
 
-  if (itemsCount <= 2) {
+  if (itemsCount < 2) {
     return res
       .status(400)
       .json({ error: 'Question could not be created, not enough items exist' });
