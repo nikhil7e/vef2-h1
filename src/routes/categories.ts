@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import {
+  categoryIdDoesExistValidator,
   genericSanitizerMany,
   stringValidator,
   validationCheck,
@@ -80,3 +81,25 @@ export const createCategory = [
   genericSanitizerMany(categoryFields),
   createCategoryHandler,
 ].flat();
+
+async function deleteCategoryHandler(req: Request, res: Response) {
+  const { categoryId } = req.params;
+
+  const id = Number.parseInt(categoryId, 10);
+
+  const categoryToSearch = await prisma.category.delete({
+    where: { id },
+  });
+
+  if (!categoryToSearch) {
+    return res.status(404).json({ error: 'Category with id does not exist' });
+  }
+
+  return res.status(204).json();
+}
+
+export const deleteCategory = [
+  requireAdminAuthentication,
+  categoryIdDoesExistValidator,
+  deleteCategoryHandler,
+];

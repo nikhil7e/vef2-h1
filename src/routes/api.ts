@@ -1,5 +1,10 @@
 import express, { Request, Response } from 'express';
-import { createCategory, getCategories, getCategory } from './categories.js';
+import {
+  createCategory,
+  deleteCategory,
+  getCategories,
+  getCategory,
+} from './categories.js';
 import {
   createCourse,
   deleteCourse,
@@ -14,9 +19,21 @@ import {
   listDepartments,
   updateDepartment,
 } from './departments.js';
-import { createItem, getItem, getItems } from './items.js';
-import { createQuestion, getQuestion, getQuestions } from './questions.js';
-import { getAdminDetails, getUser, getUsers, login, signup } from './users.js';
+import { createItem, deleteItem, getItem, getItems } from './items.js';
+import {
+  createQuestion,
+  deleteQuestion,
+  getQuestion,
+  getQuestions,
+} from './questions.js';
+import {
+  deleteUser,
+  getAdminDetails,
+  getUser,
+  getUsers,
+  login,
+  signup,
+} from './users.js';
 
 export const router = express.Router();
 
@@ -47,21 +64,25 @@ router.get('/users/:userId', getUser);
 router.post('/login', login);
 router.post('/signup', signup);
 router.get('/admin', getAdminDetails); // Hvað á getAdminDetails að gera?
+router.delete('/users/:userId', deleteUser);
 
 // Items
 router.get('/items', getItems);
 router.get('/items/:itemId', getItem);
-router.post('/items', createItem); // TODO, þarf að nota skránna hans tomma fyrir imgURL
+router.post('/items', createItem);
+router.delete('/items/:itemId', deleteItem);
 
 // Questions
 router.get('/questions', getQuestions);
 router.get('/questions/:questionId', getQuestion);
 router.post('/questions', createQuestion);
+router.delete('/questions/:questionId', deleteQuestion);
 
 // Categories
 router.get('/categories', getCategories);
 router.get('/categories/:categoryId', getCategory);
 router.post('/categories', createCategory);
+router.delete('/categories/:categoryId', deleteCategory);
 
 // Departments
 router.get('/departments', listDepartments);

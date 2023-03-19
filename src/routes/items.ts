@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import {
   categoryIdDoesExistValidator,
   genericSanitizerMany,
+  itemIdDoesExistValidator,
   itemNameDoesNotExistValidator,
   stringValidator,
   validationCheck,
@@ -87,3 +88,25 @@ export const createItem = [
   genericSanitizerMany(itemFields),
   createItemHandler,
 ].flat();
+
+async function deleteItemHandler(req: Request, res: Response) {
+  const { itemId } = req.params;
+
+  const id = Number.parseInt(itemId, 10);
+
+  const item = await prisma.items.delete({
+    where: { id },
+  });
+
+  if (!item) {
+    return res.status(404).json({ error: 'Item with itemId does not exist' });
+  }
+
+  return res.status(204).json();
+}
+
+export const deleteItem = [
+  requireAdminAuthentication,
+  itemIdDoesExistValidator,
+  deleteItemHandler,
+];

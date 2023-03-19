@@ -1,4 +1,10 @@
-import { category, items, PrismaClient } from '@prisma/client';
+import {
+  category,
+  items,
+  PrismaClient,
+  questions,
+  users,
+} from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import slugify from 'slugify';
@@ -73,6 +79,78 @@ export async function getCategoryById(id: number): Promise<category | null> {
   }
 
   return categoryToSearch;
+}
+
+export async function getQuestionById(id: number): Promise<questions | null> {
+  let questionToSearch;
+
+  try {
+    questionToSearch = await prisma.questions.findFirst({
+      where: { id },
+    });
+  } catch {
+    return null;
+  }
+
+  if (!questionToSearch) {
+    return null;
+  }
+
+  return questionToSearch;
+}
+
+export async function getUserById(id: number): Promise<users | null> {
+  let userToSearch;
+
+  try {
+    userToSearch = await prisma.users.findFirst({
+      where: { id },
+    });
+  } catch {
+    return null;
+  }
+
+  if (!userToSearch) {
+    return null;
+  }
+
+  return userToSearch;
+}
+
+export async function getUserByName(username: string): Promise<users | null> {
+  let userToSearch;
+  console.log(`the username is ${username}`);
+  try {
+    userToSearch = await prisma.users.findFirst({
+      where: { username },
+    });
+  } catch {
+    return null;
+  }
+
+  if (!userToSearch) {
+    return null;
+  }
+
+  return userToSearch;
+}
+
+export async function getItemById(id: number): Promise<items | null> {
+  let itemToSearch;
+
+  try {
+    itemToSearch = await prisma.items.findFirst({
+      where: { id },
+    });
+  } catch {
+    return null;
+  }
+
+  if (!itemToSearch) {
+    return null;
+  }
+
+  return itemToSearch;
 }
 
 export function atLeastOneBodyValueValidator(fields: Array<string>) {
@@ -167,6 +245,19 @@ export const courseTitleDoesNotExistValidator = body('title').custom(
   }
 );
 
+export const userNameDoesNotExistValidator = body('username').custom(
+  async (username) => {
+    if (await getUserByName(username)) {
+      console.log(`the username ${username} existed`);
+      return Promise.reject(
+        new Error('A user with this username already exists')
+      );
+    }
+    console.log(`the username ${username} did not exist`);
+    return Promise.resolve();
+  }
+);
+
 export const courseIdDoesNotExistValidator = body('courseId').custom(
   async (courseId) => {
     if (await getCourseByCourseId(courseId)) {
@@ -193,3 +284,26 @@ export const categoryIdDoesExistValidator = body('categoryId').custom(
     return Promise.resolve();
   }
 );
+
+export const questionIdDoesExistValidator = body('questionId').custom(
+  async (id) => {
+    if (!(await getQuestionById(Number.parseInt(id, 10)))) {
+      return Promise.reject(new Error('question with id does not exist'));
+    }
+    return Promise.resolve();
+  }
+);
+
+export const itemIdDoesExistValidator = body('itemId').custom(async (id) => {
+  if (!(await getItemById(Number.parseInt(id, 10)))) {
+    return Promise.reject(new Error('item with id does not exist'));
+  }
+  return Promise.resolve();
+});
+
+export const userIdDoesExistValidator = body('userId').custom(async (id) => {
+  if (!(await getUserById(Number.parseInt(id, 10)))) {
+    return Promise.reject(new Error('user with id does not exist'));
+  }
+  return Promise.resolve();
+});

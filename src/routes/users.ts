@@ -5,11 +5,15 @@ import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import passport from 'passport';
 import { ExtractJwt } from 'passport-jwt';
+import {
+  userIdDoesExistValidator,
+  userNameDoesNotExistValidator,
+} from '../lib/validation.js';
 
 dotenv.config();
 
 const {
-  PORT: port = 3000,
+  // PORT: port = 3000,
   JWT_SECRET: jwtSecret,
   TOKEN_LIFETIME: tokenLifetime = 86400,
   DATABASE_URL: databaseUrl,
@@ -143,7 +147,7 @@ export async function login(req: Request, res: Response) {
   return res.status(401).json({ error: 'Invalid password' });
 }
 
-export async function signup(req: Request, res: Response) {
+async function signupHandler(req: Request, res: Response) {
   const { username, password = '' } = req.body;
 
   const hashedPassword = await bcrypt.hash(password, 11);
@@ -164,6 +168,8 @@ export async function signup(req: Request, res: Response) {
   const token = jwt.sign(payload, jwtOptions.secretOrKey, tokenOptions);
   return res.json({ token });
 }
+
+export const signup = [userNameDoesNotExistValidator, signupHandler];
 
 function getAdminDetailsHandler(req: Request, res: Response) {
   res.json({ data: 'top secret' });
@@ -204,10 +210,34 @@ async function getUserHandler(req: Request, res: Response) {
   });
 
   if (!user) {
-    return res.status(201).json({ error: 'No users exist' });
+    return res
+      .status(201)
+      .json({ error: `User with id ${userId} does not exist` });
   }
 
   return res.status(200).json(user);
 }
 
 export const getUser = [requireAdminAuthentication, getUserHandler];
+
+async function deleteUserHandler(req: Request, res: Response) {
+  const { userId } = req.params;
+
+  const user = await prisma.users.delete({
+    where: { id: Number.parseInt(userId, 10) },
+  });
+
+  if (!user) {
+    return res
+      .status(404)
+      .json({ error: `User with id ${userId} does not exist` });
+  }
+
+  return res.status(204).json();
+}
+
+export const deleteUser = [
+  requireAdminAuthentication,
+  userIdDoesExistValidator,
+  deleteUserHandler,
+];
