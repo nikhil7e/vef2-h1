@@ -8,6 +8,7 @@ import { ExtractJwt } from 'passport-jwt';
 import {
   userIdDoesExistValidator,
   userNameDoesNotExistValidator,
+  validationCheck,
 } from '../lib/validation.js';
 
 dotenv.config();
@@ -169,7 +170,11 @@ async function signupHandler(req: Request, res: Response) {
   return res.json({ token });
 }
 
-export const signup = [userNameDoesNotExistValidator, signupHandler];
+export const signup = [
+  userNameDoesNotExistValidator,
+  validationCheck,
+  signupHandler,
+];
 
 function getAdminDetailsHandler(req: Request, res: Response) {
   res.json({ data: 'top secret' });
@@ -201,7 +206,7 @@ export const getUsers = [requireAdminAuthentication, getUsersHandler];
 async function getUserHandler(req: Request, res: Response) {
   const { userId } = req.params;
 
-  const user = await prisma.users.findUnique({
+  const user = await prisma.users.findFirst({
     where: { id: Number.parseInt(userId, 10) },
     include: {
       firstOptionAnsweredQuestions: true,
@@ -211,14 +216,19 @@ async function getUserHandler(req: Request, res: Response) {
 
   if (!user) {
     return res
-      .status(201)
+      .status(404)
       .json({ error: `User with id ${userId} does not exist` });
   }
 
   return res.status(200).json(user);
 }
 
-export const getUser = [requireAdminAuthentication, getUserHandler];
+export const getUser = [
+  requireAdminAuthentication,
+  userIdDoesExistValidator,
+  validationCheck,
+  getUserHandler,
+];
 
 async function deleteUserHandler(req: Request, res: Response) {
   const { userId } = req.params;
@@ -239,5 +249,6 @@ async function deleteUserHandler(req: Request, res: Response) {
 export const deleteUser = [
   requireAdminAuthentication,
   userIdDoesExistValidator,
+  validationCheck,
   deleteUserHandler,
 ];

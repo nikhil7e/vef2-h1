@@ -6,7 +6,7 @@ import {
   users,
 } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
-import { body, validationResult } from 'express-validator';
+import { body, param, validationResult } from 'express-validator';
 import slugify from 'slugify';
 import xss from 'xss';
 import { ALLOWED_SEMESTERS } from '../types.js';
@@ -177,16 +177,17 @@ export function atLeastOneBodyValueValidator(fields: Array<string>) {
   });
 }
 
-export const xssSanitizer = (param: string) =>
-  body(param).customSanitizer((v) => xss(v));
+export const xssSanitizer = (parameter: string) =>
+  body(parameter).customSanitizer((v) => xss(v));
 
 export const xssSanitizerMany = (params: string[]) =>
-  params.map((param) => xssSanitizer(param));
+  params.map((parameter) => xssSanitizer(parameter));
 
-export const genericSanitizer = (param: string) => body(param).trim().escape();
+export const genericSanitizer = (parameter: string) =>
+  body(parameter).trim().escape();
 
 export const genericSanitizerMany = (params: string[]) =>
-  params.map((param) => genericSanitizer(param));
+  params.map((parameter) => genericSanitizer(parameter));
 
 export const stringValidator = ({
   field = '',
@@ -285,7 +286,16 @@ export const categoryIdDoesExistValidator = body('categoryId').custom(
   }
 );
 
-export const questionIdDoesExistValidator = body('questionId').custom(
+export const categoryIdParamDoesExistValidator = param('categoryId').custom(
+  async (id) => {
+    if (!(await getCategoryById(Number.parseInt(id, 10)))) {
+      return Promise.reject(new Error('category with id does not exist'));
+    }
+    return Promise.resolve();
+  }
+);
+
+export const questionIdDoesExistValidator = param('questionId').custom(
   async (id) => {
     if (!(await getQuestionById(Number.parseInt(id, 10)))) {
       return Promise.reject(new Error('question with id does not exist'));
@@ -294,14 +304,14 @@ export const questionIdDoesExistValidator = body('questionId').custom(
   }
 );
 
-export const itemIdDoesExistValidator = body('itemId').custom(async (id) => {
+export const itemIdDoesExistValidator = param('itemId').custom(async (id) => {
   if (!(await getItemById(Number.parseInt(id, 10)))) {
     return Promise.reject(new Error('item with id does not exist'));
   }
   return Promise.resolve();
 });
 
-export const userIdDoesExistValidator = body('userId').custom(async (id) => {
+export const userIdDoesExistValidator = param('userId').custom(async (id) => {
   if (!(await getUserById(Number.parseInt(id, 10)))) {
     return Promise.reject(new Error('user with id does not exist'));
   }

@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import {
-  categoryIdDoesExistValidator,
+  categoryIdParamDoesExistValidator,
   genericSanitizerMany,
   stringValidator,
   validationCheck,
@@ -51,7 +51,12 @@ async function getCategoryHandler(req: Request, res: Response) {
   return res.status(200).json(categoryToSearch);
 }
 
-export const getCategory = [requireAdminAuthentication, getCategoryHandler];
+export const getCategory = [
+  requireAdminAuthentication,
+  categoryIdParamDoesExistValidator,
+  validationCheck,
+  getCategoryHandler,
+];
 
 async function createCategoryHandler(req: Request, res: Response) {
   const { description, questionText } = req.body;
@@ -100,6 +105,7 @@ async function deleteCategoryHandler(req: Request, res: Response) {
 
 export const deleteCategory = [
   requireAdminAuthentication,
-  categoryIdDoesExistValidator,
+  categoryIdParamDoesExistValidator,
+  validationCheck,
   deleteCategoryHandler,
 ];

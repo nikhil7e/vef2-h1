@@ -56,7 +56,12 @@ async function getItemHandler(req: Request, res: Response) {
   return res.status(200).json(item);
 }
 
-export const getItem = [requireAdminAuthentication, getItemHandler];
+export const getItem = [
+  requireAdminAuthentication,
+  itemIdDoesExistValidator,
+  validationCheck,
+  getItemHandler,
+];
 
 async function createItemHandler(req: Request, res: Response) {
   const { name, categoryId } = req.body;
@@ -108,5 +113,6 @@ async function deleteItemHandler(req: Request, res: Response) {
 export const deleteItem = [
   requireAdminAuthentication,
   itemIdDoesExistValidator,
+  validationCheck,
   deleteItemHandler,
 ];

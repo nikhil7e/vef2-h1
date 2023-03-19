@@ -60,7 +60,12 @@ async function getQuestionHandler(req: Request, res: Response) {
   return res.status(200).json(question);
 }
 
-export const getQuestion = [requireAdminAuthentication, getQuestionHandler];
+export const getQuestion = [
+  requireAdminAuthentication,
+  questionIdDoesExistValidator,
+  validationCheck,
+  getQuestionHandler,
+];
 
 async function createQuestionHandler(req: Request, res: Response) {
   let { categoryId } = req.body;
@@ -142,5 +147,6 @@ async function deleteQuestionHandler(req: Request, res: Response) {
 export const deleteQuestion = [
   requireAdminAuthentication,
   questionIdDoesExistValidator,
+  validationCheck,
   deleteQuestionHandler,
 ];
