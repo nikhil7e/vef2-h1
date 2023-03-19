@@ -1,7 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import {
+  atLeastOneBodyValueValidator,
   categoryIdParamDoesExistValidator,
+  categoryNameDoesNotExistValidator,
   genericSanitizerMany,
   stringValidator,
   validationCheck,
@@ -11,7 +13,7 @@ import { requireAdminAuthentication } from './users.js';
 
 const prisma = new PrismaClient();
 
-const categoryFields = ['description', 'questionText'];
+const categoryFields = ['name', 'description', 'questionText'];
 
 async function getCategoriesHandler(req: Request, res: Response) {
   const categories = await prisma.category.findMany({
@@ -59,10 +61,11 @@ export const getCategory = [
 ];
 
 async function createCategoryHandler(req: Request, res: Response) {
-  const { description, questionText } = req.body;
+  const { name, description, questionText } = req.body;
 
   const categoryToCreate = await prisma.category.create({
     data: {
+      name,
       description,
       questionText,
     },
@@ -77,10 +80,10 @@ async function createCategoryHandler(req: Request, res: Response) {
 
 export const createCategory = [
   requireAdminAuthentication,
+  stringValidator({ field: 'name', maxLength: 128 }),
   stringValidator({ field: 'description', maxLength: 128 }),
   stringValidator({ field: 'questionText', maxLength: 128 }),
-  // itemNameDoesNotExistValidator,
-  // categoryIdDoesExistValidator,
+  categoryNameDoesNotExistValidator,
   xssSanitizerMany(categoryFields),
   validationCheck,
   genericSanitizerMany(categoryFields),
@@ -109,3 +112,57 @@ export const deleteCategory = [
   validationCheck,
   deleteCategoryHandler,
 ];
+
+async function patchCategoryHandler(req: Request, res: Response) {
+  const { name, description, questionText } = req.body;
+  const { categoryId } = req.params;
+
+  const id = Number.parseInt(categoryId, 10);
+
+  const oldCategory = await prisma.category.findFirst({
+    where: {
+      id,
+    },
+  });
+
+  const categoryToCreate = await prisma.category.update({
+    where: {
+      id,
+    },
+    data: {
+      name: name || oldCategory?.name,
+      description,
+      questionText,
+    },
+  });
+
+  if (!categoryToCreate) {
+    return res.status(400).json({ error: 'Category could not be created' });
+  }
+
+  return res.status(200).json(categoryToCreate);
+}
+
+export const patchCategory = [
+  requireAdminAuthentication,
+  stringValidator({ field: 'name', maxLength: 128, optional: true }),
+  stringValidator({
+    field: 'description',
+    maxLength: 128,
+    optional: true,
+    valueRequired: false,
+  }),
+  stringValidator({
+    field: 'questionText',
+    maxLength: 128,
+    optional: true,
+    valueRequired: false,
+  }),
+  atLeastOneBodyValueValidator(categoryFields),
+  categoryIdParamDoesExistValidator,
+  categoryNameDoesNotExistValidator({ optional: true }),
+  xssSanitizerMany(categoryFields),
+  validationCheck,
+  genericSanitizerMany(categoryFields),
+  patchCategoryHandler,
+].flat();
