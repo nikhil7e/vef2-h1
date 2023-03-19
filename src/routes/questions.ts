@@ -16,6 +16,13 @@ const questionFields = ['categoryId'];
 async function getQuestionsHandler(req: Request, res: Response) {
   const questions = await prisma.questions.findMany({
     where: {},
+    include: {
+      category: true,
+      firstItem: true,
+      secondItem: true,
+      firstOptionAnsweredUsers: true,
+      secondOptionAnsweredUsers: true,
+    },
   });
 
   if (!questions) {
@@ -34,6 +41,13 @@ async function getQuestionHandler(req: Request, res: Response) {
 
   const question = await prisma.questions.findUnique({
     where: { id },
+    include: {
+      category: true,
+      firstItem: true,
+      secondItem: true,
+      firstOptionAnsweredUsers: true,
+      secondOptionAnsweredUsers: true,
+    },
   });
 
   if (!question) {

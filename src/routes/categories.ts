@@ -15,6 +15,10 @@ const categoryFields = ['description', 'questionText'];
 async function getCategoriesHandler(req: Request, res: Response) {
   const categories = await prisma.category.findMany({
     where: {},
+    include: {
+      items: true,
+      questions: true,
+    },
   });
 
   if (!categories) {
@@ -33,6 +37,10 @@ async function getCategoryHandler(req: Request, res: Response) {
 
   const categoryToSearch = await prisma.category.findUnique({
     where: { id },
+    include: {
+      items: true,
+      questions: true,
+    },
   });
 
   if (!categoryToSearch) {

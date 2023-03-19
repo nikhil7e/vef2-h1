@@ -18,6 +18,11 @@ const itemFields = ['name', 'category', 'imageURL'];
 async function getItemsHandler(req: Request, res: Response) {
   const items = await prisma.items.findMany({
     where: {},
+    include: {
+      category: true,
+      firstOptionQuestions: true,
+      secondOptionQuestions: true,
+    },
   });
 
   if (!items) {
@@ -36,6 +41,11 @@ async function getItemHandler(req: Request, res: Response) {
 
   const item = await prisma.items.findUnique({
     where: { id },
+    include: {
+      category: true,
+      firstOptionQuestions: true,
+      secondOptionQuestions: true,
+    },
   });
 
   if (!item) {

@@ -32,6 +32,10 @@ export async function findById(id: number): Promise<users | null> {
     where: {
       id,
     },
+    include: {
+      firstOptionAnsweredQuestions: true,
+      secondOptionAnsweredQuestions: true,
+    },
   });
 
   if (!user) {
@@ -173,6 +177,10 @@ export const getAdminDetails = [
 async function getUsersHandler(req: Request, res: Response) {
   const user = await prisma.users.findMany({
     where: {},
+    include: {
+      firstOptionAnsweredQuestions: true,
+      secondOptionAnsweredQuestions: true,
+    },
   });
 
   if (!user) {
@@ -189,6 +197,10 @@ async function getUserHandler(req: Request, res: Response) {
 
   const user = await prisma.users.findUnique({
     where: { id: Number.parseInt(userId, 10) },
+    include: {
+      firstOptionAnsweredQuestions: true,
+      secondOptionAnsweredQuestions: true,
+    },
   });
 
   if (!user) {
