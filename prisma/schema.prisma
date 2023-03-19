@@ -69,6 +69,7 @@ model category {
   id           Int         @id @default(autoincrement())
   items        items[]
   questions    questions[]
+  name         String      @unique
   description  String
   questionText String
   createdAt    DateTime?   @default(now())

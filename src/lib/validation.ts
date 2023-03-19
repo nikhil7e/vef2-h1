@@ -81,6 +81,26 @@ export async function getCategoryById(id: number): Promise<category | null> {
   return categoryToSearch;
 }
 
+export async function getCategoryByName(
+  name: string
+): Promise<category | null> {
+  let categoryToSearch;
+
+  try {
+    categoryToSearch = await prisma.category.findFirst({
+      where: { name },
+    });
+  } catch {
+    return null;
+  }
+
+  if (!categoryToSearch) {
+    return null;
+  }
+
+  return categoryToSearch;
+}
+
 export async function getQuestionById(id: number): Promise<questions | null> {
   let questionToSearch;
 
@@ -285,6 +305,31 @@ export const categoryIdDoesExistValidator = body('categoryId').custom(
     return Promise.resolve();
   }
 );
+
+// export const categoryNameDoesNotExistValidator = body('name').custom(
+//   async (name) => {
+//     if (!(await getCategoryByName(name))) {
+//       return Promise.resolve();
+//     }
+//     return Promise.reject(new Error('category with name already exists'));
+//   }
+// );
+
+export const categoryNameDoesNotExistValidator = ({
+  optional = false,
+} = {}) => {
+  const val = body('name').custom(async (name) => {
+    if (!(await getCategoryByName(name))) {
+      return Promise.resolve();
+    }
+    return Promise.reject(new Error('category with name already exists'));
+  });
+
+  if (optional) {
+    return val.optional();
+  }
+  return val;
+};
 
 export const categoryIdParamDoesExistValidator = param('categoryId').custom(
   async (id) => {

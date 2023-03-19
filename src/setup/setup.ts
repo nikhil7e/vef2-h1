@@ -53,6 +53,7 @@ async function setup() {
 
   const testCategory = await prisma.category.create({
     data: {
+      name: 'testName',
       questionText: 'text',
       description: 'desc',
     },

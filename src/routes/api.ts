@@ -4,6 +4,7 @@ import {
   deleteCategory,
   getCategories,
   getCategory,
+  patchCategory,
 } from './categories.js';
 import {
   createCourse,
@@ -121,6 +122,7 @@ router.get('/categories', getCategories);
 router.get('/categories/:categoryId', getCategory);
 router.post('/categories', createCategory);
 router.delete('/categories/:categoryId', deleteCategory);
+router.patch('/categories/:categoryId', patchCategory);
 
 // Departments
 router.get('/departments', listDepartments);
