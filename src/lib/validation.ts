@@ -170,7 +170,7 @@ export const itemNameDoesNotExistValidator = body('name').custom(
 
 export const categoryIdDoesExistValidator = body('categoryId').custom(
   async (id) => {
-    if (!(await getCategoryById(id))) {
+    if (!(await getCategoryById(Number.parseInt(id, 10)))) {
       return Promise.reject(new Error('category with id does not exist'));
     }
     return Promise.resolve();
