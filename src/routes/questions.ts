@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import {
   categoryIdDoesExistValidator,
   genericSanitizerMany,
+  questionIdDoesExistValidator,
   stringValidator,
   validationCheck,
   xssSanitizerMany,
@@ -59,7 +60,12 @@ async function getQuestionHandler(req: Request, res: Response) {
   return res.status(200).json(question);
 }
 
-export const getQuestion = [requireAdminAuthentication, getQuestionHandler];
+export const getQuestion = [
+  requireAdminAuthentication,
+  questionIdDoesExistValidator,
+  validationCheck,
+  getQuestionHandler,
+];
 
 async function createQuestionHandler(req: Request, res: Response) {
   let { categoryId } = req.body;
@@ -119,3 +125,28 @@ export const createQuestion = [
   genericSanitizerMany(questionFields),
   createQuestionHandler,
 ].flat();
+
+async function deleteQuestionHandler(req: Request, res: Response) {
+  const { questionId } = req.params;
+
+  const id = Number.parseInt(questionId, 10);
+
+  const question = await prisma.questions.delete({
+    where: { id },
+  });
+
+  if (!question) {
+    return res
+      .status(404)
+      .json({ error: 'Question with questionId does not exist' });
+  }
+
+  return res.status(204).json();
+}
+
+export const deleteQuestion = [
+  requireAdminAuthentication,
+  questionIdDoesExistValidator,
+  validationCheck,
+  deleteQuestionHandler,
+];
