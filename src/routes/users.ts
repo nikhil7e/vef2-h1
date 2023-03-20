@@ -6,9 +6,13 @@ import jwt from 'jsonwebtoken';
 import passport from 'passport';
 import { ExtractJwt } from 'passport-jwt';
 import {
+  atLeastOneBodyValueValidator,
+  genericSanitizerMany,
+  stringValidator,
   userIdDoesExistValidator,
   userNameDoesNotExistValidator,
   validationCheck,
+  xssSanitizerMany,
 } from '../lib/validation.js';
 
 dotenv.config();
@@ -31,6 +35,8 @@ const jwtOptions = {
 };
 
 const prisma = new PrismaClient();
+
+const userFields = ['username', 'password'];
 
 export async function findById(id: number): Promise<users | null> {
   const user = await prisma.users.findUnique({
@@ -252,3 +258,48 @@ export const deleteUser = [
   validationCheck,
   deleteUserHandler,
 ];
+
+async function patchUserHandler(req: Request, res: Response) {
+  const { username, password } = req.body;
+  const { userId } = req.params;
+
+  const id = Number.parseInt(userId, 10);
+
+  const oldUser = await prisma.users.findFirst({
+    where: {
+      id,
+    },
+  });
+
+  const userToCreate = await prisma.users.update({
+    where: {
+      id,
+    },
+    data: {
+      username: username || oldUser?.username,
+      password: password ? await bcrypt.hash(password, 11) : oldUser?.password,
+    },
+  });
+
+  if (!userToCreate) {
+    return res.status(400).json({ error: 'User could not be updated' });
+  }
+
+  return res.status(200).json(userToCreate);
+}
+
+export const patchUser = [
+  requireAdminAuthentication,
+  stringValidator({ field: 'username', maxLength: 128, optional: true }),
+  stringValidator({
+    field: 'password',
+    maxLength: 128,
+    optional: true,
+  }),
+  atLeastOneBodyValueValidator(userFields),
+  userNameDoesNotExistValidator({ optional: true }),
+  xssSanitizerMany(userFields),
+  validationCheck,
+  genericSanitizerMany(userFields),
+  patchUserHandler,
+].flat();

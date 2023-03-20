@@ -34,6 +34,7 @@ import {
   getUser,
   getUsers,
   login,
+  patchUser,
   signup,
 } from './users.js';
 
@@ -103,6 +104,7 @@ router.post('/login', login);
 router.post('/signup', signup);
 router.get('/admin', getAdminDetails); // Hvað á getAdminDetails að gera?
 router.delete('/users/:userId', deleteUser);
+router.patch('/users/:userId', patchUser);
 
 // Items
 router.get('/items', getItems);
