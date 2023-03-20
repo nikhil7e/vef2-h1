@@ -1,9 +1,7 @@
 import dotenv from 'dotenv';
 import fetch, { RequestInit, Response } from 'node-fetch';
 
-
 dotenv.config();
-
 
 const { BASE_TEST_URL = 'http://localhost:3000' } = process.env;
 
@@ -19,7 +17,7 @@ async function methodAndParse(
   const url = new URL(path, baseUrl);
 
   const options: RequestInit = {
-    headers: {}, 
+    headers: {},
   };
 
   if (method !== 'GET') {
@@ -49,9 +47,7 @@ async function methodAndParse(
   };
 }
 
-export async function fetchAndParse(
-  path: string
-): Promise<ResultAndStatus> {
+export async function fetchAndParse(path: string): Promise<ResultAndStatus> {
   return methodAndParse('GET', path);
 }
 
