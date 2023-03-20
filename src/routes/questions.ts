@@ -1,11 +1,12 @@
 import { PrismaClient, users } from '@prisma/client';
 import { Request, Response } from 'express';
+import { body } from 'express-validator';
 import {
+  atLeastOneBodyValueValidator,
   categoryIdDoesExistValidator,
   genericSanitizerMany,
   itemIdDoesExistValidator,
   questionIdDoesExistValidator,
-  stringValidator,
   userHasNotVotedForQuestionValidator,
   validationCheck,
   xssSanitizerMany,
@@ -119,7 +120,10 @@ async function createQuestionHandler(req: Request, res: Response) {
 
 export const createQuestion = [
   requireAdminAuthentication,
-  stringValidator({ field: 'categoryId', maxLength: 128 }),
+  body('categoryId')
+    .isInt({ min: 1 })
+    .withMessage('categoryId must be integer > 0'),
+  // stringValidator({ field: 'categoryId', maxLength: 128 }),
   // itemNameDoesNotExistValidator,
   categoryIdDoesExistValidator,
   xssSanitizerMany(questionFields),
@@ -220,3 +224,96 @@ export const voteItem = [
   validationCheck,
   voteItemHandler,
 ];
+
+async function patchQuestionHandler(req: Request, res: Response) {
+  let { categoryId } = req.body;
+  const { questionId } = req.params;
+
+  categoryId = Number.parseInt(categoryId, 10);
+
+  const qId = Number.parseInt(questionId, 10);
+
+  // const oldQuestion = await prisma.questions.findFirst({
+  //   where: {
+  //     id: qId,
+  //   },
+  // });
+
+  await prisma.questions.delete({
+    where: {
+      id: qId,
+    },
+  });
+  const itemsCount = await prisma.items.count({ where: { categoryId } });
+
+  if (itemsCount < 2) {
+    return res
+      .status(400)
+      .json({ error: 'Question could not be created, not enough items exist' });
+  }
+
+  let skip = Math.floor(Math.random() * itemsCount);
+
+  const firstItem = await prisma.items.findMany({
+    where: { categoryId },
+    take: 1,
+    skip,
+  });
+
+  let secondItem;
+
+  do {
+    skip = Math.floor(Math.random() * itemsCount);
+    // eslint-disable-next-line no-await-in-loop
+    secondItem = await prisma.items.findMany({
+      where: { categoryId },
+      take: 1,
+      skip,
+    });
+  } while (firstItem[0].name === secondItem[0].name);
+
+  const question = await prisma.questions.create({
+    data: {
+      id: qId,
+      firstItemId: firstItem[0].id,
+      secondItemId: secondItem[0].id,
+      categoryId,
+    },
+    include: {
+      category: true,
+      firstItem: true,
+      secondItem: true,
+      firstOptionAnsweredUsers: false,
+      secondOptionAnsweredUsers: false,
+    },
+  });
+
+  if (!question) {
+    return res.status(400).json({ error: 'Question could not be updated' });
+  }
+
+  return res.status(200).json(question);
+
+  // const questionToUpdate = await createQuestionHandler(req, res);
+
+  // if (!questionToUpdate) {
+  //   return res.status(400).json({ error: 'Category could not be updated' });
+  // }
+
+  // return res.status(200).json(questionToUpdate);
+}
+
+export const patchQuestion = [
+  requireAdminAuthentication,
+  body('categoryId')
+    .isInt({ min: 1 })
+    .withMessage('categoryId must be integer > 0'),
+  atLeastOneBodyValueValidator(questionFields),
+  // itemIdDoesExistValidator,
+  // itemNameDoesNotExistValidator({ optional: true }),
+  categoryIdDoesExistValidator({ optional: false }),
+  xssSanitizerMany(questionFields),
+  validationCheck,
+  genericSanitizerMany(questionFields),
+  patchQuestionHandler,
+].flat();
