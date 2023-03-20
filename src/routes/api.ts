@@ -20,7 +20,13 @@ import {
   listDepartments,
   updateDepartment,
 } from './departments.js';
-import { createItem, deleteItem, getItem, getItems } from './items.js';
+import {
+  createItem,
+  deleteItem,
+  getItem,
+  getItems,
+  patchItem,
+} from './items.js';
 import {
   createQuestion,
   deleteQuestion,
@@ -111,6 +117,7 @@ router.get('/items', getItems);
 router.get('/items/:itemId', getItem);
 router.post('/items', createItem);
 router.delete('/items/:itemId', deleteItem);
+router.patch('/items/:itemId', patchItem);
 
 // Questions
 router.get('/questions', getQuestions);

@@ -313,23 +313,33 @@ export const courseIdDoesNotExistValidator = body('courseId').custom(
   }
 );
 
-export const itemNameDoesNotExistValidator = body('name').custom(
-  async (name) => {
+export const itemNameDoesNotExistValidator = ({ optional = false } = {}) => {
+  const val = body('name').custom(async (name) => {
     if (await getItemByName(name)) {
       return Promise.reject(new Error('item with name already exists'));
     }
     return Promise.resolve();
-  }
-);
+  });
 
-export const categoryIdDoesExistValidator = body('categoryId').custom(
-  async (id) => {
-    if (!(await getCategoryById(Number.parseInt(id, 10)))) {
-      return Promise.reject(new Error('category with id does not exist'));
+  if (optional) {
+    return val.optional();
+  }
+  return val;
+};
+
+export const categoryIdDoesExistValidator = ({ optional = false } = {}) => {
+  const val = body('categoryId').custom(async (id) => {
+    if (await getItemByName(id)) {
+      return Promise.reject(new Error('ategory with id does not exist'));
     }
     return Promise.resolve();
+  });
+
+  if (optional) {
+    return val.optional();
   }
-);
+  return val;
+};
 
 // export const categoryNameDoesNotExistValidator = body('name').custom(
 //   async (name) => {
