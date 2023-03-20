@@ -75,13 +75,70 @@ async function setup() {
     },
   });
 
-  const hashedPassword = await bcrypt.hash('123', 11);
+  const beercategory = await prisma.category.create({
+    data: {
+      name: 'Classic beers and lagers',
+      questionText: 'Which of these do you prefer?',
+      description: 'A fine collection of beverages :)',
+    },
+  });
+
+  const gamingcategory = await prisma.category.create({
+    data: {
+      name: 'PC Videogames',
+      questionText: 'Which of these do you prefer?',
+      description:
+        'Videogames are a great way to waste time, not spend but waste. :)',
+    },
+  });
+
+  let hashedPassword = await bcrypt.hash('123', 11);
 
   const adminUser = await prisma.users.create({
     data: {
       username: 'admin',
       password: hashedPassword,
       admin: true,
+    },
+  });
+
+  hashedPassword = await bcrypt.hash('eddipass', 11);
+
+  let newUser = await prisma.users.create({
+    data: {
+      username: 'Eddi',
+      password: hashedPassword,
+      admin: false,
+    },
+  });
+
+  hashedPassword = await bcrypt.hash('joebroe123', 11);
+
+  newUser = await prisma.users.create({
+    data: {
+      username: 'joe_nash01',
+      password: hashedPassword,
+      admin: false,
+    },
+  });
+
+  hashedPassword = await bcrypt.hash('loki11', 11);
+
+  newUser = await prisma.users.create({
+    data: {
+      username: 'tommyboy98',
+      password: hashedPassword,
+      admin: false,
+    },
+  });
+
+  hashedPassword = await bcrypt.hash('nyquist69', 11);
+
+  newUser = await prisma.users.create({
+    data: {
+      username: 'sigma_nicc17',
+      password: hashedPassword,
+      admin: false,
     },
   });
 
@@ -102,6 +159,48 @@ async function setup() {
       console.log(itemToInsert);
     }
   }
+
+  // req.body.categoryId = 1;
+
+  let newQuestion = await prisma.questions.create({
+    data: {
+      firstItemId: 1,
+      secondItemId: 2,
+      categoryId: 1,
+    },
+  });
+
+  newQuestion = await prisma.questions.create({
+    data: {
+      firstItemId: 8,
+      secondItemId: 10,
+      categoryId: 2,
+    },
+  });
+
+  newQuestion = await prisma.questions.create({
+    data: {
+      firstItemId: 23,
+      secondItemId: 47,
+      categoryId: 3,
+    },
+  });
+
+  newQuestion = await prisma.questions.create({
+    data: {
+      firstItemId: 31,
+      secondItemId: 45,
+      categoryId: 3,
+    },
+  });
+
+  newQuestion = await prisma.questions.create({
+    data: {
+      firstItemId: 62,
+      secondItemId: 70,
+      categoryId: 3,
+    },
+  });
 
   await prisma.$disconnect();
 }
