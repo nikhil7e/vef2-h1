@@ -2,21 +2,396 @@
   {
     "name": "Nocco: Miami Strawberry",
     "categoryId": 1,
-    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/c_lfill,h_1000,w_1000/Nocco:%20Miami%20Strawberry"
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Nocco:%20Miami%20Strawberry"
   },
   {
     "name": "Monster Energy: Zero Ultra",
     "categoryId": 1,
-    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/c_lfill,h_1000,w_1000/Monster%20Energy:%20Zero%20Ultra"
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Monster%20Energy:%20Zero%20Ultra"
   },
   {
     "name": "Collab: Límónu og Ylliblóma",
     "categoryId": 1,
-    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/c_lfill,h_1000,w_1000/Collab:%20L%C3%ADm%C3%B3nu%20og%20Yllibl%C3%B3ma"
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Collab:%20L%C3%ADm%C3%B3nu%20og%20Yllibl%C3%B3ma"
   },
   {
     "name": "Red Bull Sugar Free",
     "categoryId": 1,
-    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/c_lfill,h_1000,w_1000/Red%20Bull%20Sugar%20Free"
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Red%20Bull%20Sugar%20Free"
+  },
+  {
+    "name": "SAMbíóin: Kringlunni",
+    "categoryId": 2,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/SAMb%C3%AD%C3%B3in:%20Kringlunni"
+  },
+  {
+    "name": "SAMbíóin: Álfabakka",
+    "categoryId": 2,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/SAMb%C3%AD%C3%B3in:%20%C3%81lfabakka"
+  },
+  {
+    "name": "Bíó Paradís",
+    "categoryId": 2,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/B%C3%AD%C3%B3%20Parad%C3%ADs"
+  },
+  {
+    "name": "Smárabíó",
+    "categoryId": 2,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Sm%C3%A1rab%C3%AD%C3%B3"
+  },
+  {
+    "name": "Laugarásbíó",
+    "categoryId": 2,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Laugar%C3%A1sb%C3%AD%C3%B3"
+  },
+  {
+    "name": "SAMbíóin: Egilshöll",
+    "categoryId": 2,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/SAMb%C3%AD%C3%B3in:%20Egilsh%C3%B6ll"
+  },
+  {
+    "name": "SAMbíóin: Akureyri",
+    "categoryId": 2,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/SAMb%C3%AD%C3%B3in:%20Akureyri"
+  },
+  {
+    "name": "Þorlákshöfn",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/%C3%9Eorl%C3%A1ksh%C3%B6fn"
+  },
+  {
+    "name": "Þelamerkurlaug",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/%C3%9Eelamerkurlaug"
+  },
+  {
+    "name": "Vopnafjörður – Selárdalur",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Vopnafj%C3%B6r%C3%B0ur%20%E2%80%93%20Sel%C3%A1rdalur"
+  },
+  {
+    "name": "Vogar, Vatnsleysuströnd",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Vogar%2C%20Vatnsleysustr%C3%B6nd"
+  },
+  {
+    "name": "Vík",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/V%C3%ADk"
+  },
+  {
+    "name": "Vesturbæjarlaug",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Vesturb%C3%A6jarlaug"
+  },
+  {
+    "name": "Vestmannaeyjar",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Vestmannaeyjar"
+  },
+  {
+    "name": "Varmárlaug",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Varm%C3%A1rlaug"
+  },
+  {
+    "name": "Varmahlíð",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Varmahl%C3%AD%C3%B0"
+  },
+  {
+    "name": "Sundlaugin Þingeyri",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Sundlaugin%20%C3%9Eingeyri"
+  },
+  {
+    "name": "Sundlaugin Laugum",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Sundlaugin%20Laugum"
+  },
+  {
+    "name": "Sundlaugin Laugaskarði",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Sundlaugin%20Laugaskar%C3%B0i"
+  },
+  {
+    "name": "Sundlaugin Laugalandi",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Sundlaugin%20Laugalandi"
+  },
+  {
+    "name": "Sundlaugin Hvammstanga",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Sundlaugin%20Hvammstanga"
+  },
+  {
+    "name": "Sundlaugin Egilsstöðum",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Sundlaugin%20Egilsst%C3%B6%C3%B0um"
+  },
+  {
+    "name": "Sundlaugin Blönduósi",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Sundlaugin%20Bl%C3%B6ndu%C3%B3si"
+  },
+  {
+    "name": "Sundlaug Kópavogs",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Sundlaug%20K%C3%B3pavogs"
+  },
+  {
+    "name": "Sundlaug Húsavíkur",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Sundlaug%20H%C3%BAsav%C3%ADkur"
+  },
+  {
+    "name": "Sundlaug Hafnar",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Sundlaug%20Hafnar"
+  },
+  {
+    "name": "Sundlaug Grindavíkur",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Sundlaug%20Grindav%C3%ADkur"
+  },
+  {
+    "name": "Sundlaug Djúpavogs",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Sundlaug%20Dj%C3%BApavogs"
+  },
+  {
+    "name": "Sundlaug Akureyrar",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Sundlaug%20Akureyrar"
+  },
+  {
+    "name": "Sundhöll Seyðisfjarðar",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Sundh%C3%B6ll%20Sey%C3%B0isfjar%C3%B0ar"
+  },
+  {
+    "name": "Sundhöll Selfoss",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Sundh%C3%B6ll%20Selfoss"
+  },
+  {
+    "name": "Sundhöll Reykjavíkur",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Sundh%C3%B6ll%20Reykjav%C3%ADkur"
+  },
+  {
+    "name": "Sundhöll Ísafjarðar",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Sundh%C3%B6ll%20%C3%8Dsafjar%C3%B0ar"
+  },
+  {
+    "name": "Suðureyri",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Su%C3%B0ureyri"
+  },
+  {
+    "name": "Suðurbæjarlaug",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Su%C3%B0urb%C3%A6jarlaug"
+  },
+  {
+    "name": "Stykkishólmur",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Stykkish%C3%B3lmur"
+  },
+  {
+    "name": "Stokkseyri",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Stokkseyri"
+  },
+  {
+    "name": "Stöðvarfjörður",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/St%C3%B6%C3%B0varfj%C3%B6r%C3%B0ur"
+  },
+  {
+    "name": "Stefánslaug, Neskaupsstað",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Stef%C3%A1nslaug%2C%20Neskaupssta%C3%B0"
+  },
+  {
+    "name": "Sólgarðar í Fljótum",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/S%C3%B3lgar%C3%B0ar%20%C3%AD%20Flj%C3%B3tum"
+  },
+  {
+    "name": "Skeiðalaug",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Skei%C3%B0alaug"
+  },
+  {
+    "name": "Skagaströnd",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Skagastr%C3%B6nd"
+  },
+  {
+    "name": "Sauðárkrókur",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Sau%C3%B0%C3%A1rkr%C3%B3kur"
+  },
+  {
+    "name": "Salalaug",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Salalaug"
+  },
+  {
+    "name": "Raufarhöfn",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Raufarh%C3%B6fn"
+  },
+  {
+    "name": "Patreksfjörður",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Patreksfj%C3%B6r%C3%B0ur"
+  },
+  {
+    "name": "Ólafsvík",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/%C3%93lafsv%C3%ADk"
+  },
+  {
+    "name": "Neslaug",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Neslaug"
+  },
+  {
+    "name": "Lýsulaugar",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/L%C3%BDsulaugar"
+  },
+  {
+    "name": "Lundur í Öxarfirði",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Lundur%20%C3%AD%20%C3%96xarfir%C3%B0i"
+  },
+  {
+    "name": "Laugarvatn",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Laugarvatn"
+  },
+  {
+    "name": "Laugarnes við Birkimel",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Laugarnes%20vi%C3%B0%20Birkimel"
+  },
+  {
+    "name": "Laugardalslaug",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Laugardalslaug"
+  },
+  {
+    "name": "Jaðarsbakkalaug, Akranesi",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Ja%C3%B0arsbakkalaug%2C%20Akranesi"
+  },
+  {
+    "name": "Íþróttamiðstöðin í Reykholti",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/%C3%8D%C3%BEr%C3%B3ttami%C3%B0st%C3%B6%C3%B0in%20%C3%AD%20Reykholti"
+  },
+  {
+    "name": "Illugastaðir",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Illugasta%C3%B0ir"
+  },
+  {
+    "name": "Hvolsvöllur",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Hvolsv%C3%B6llur"
+  },
+  {
+    "name": "Hrísey",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Hr%C3%ADsey"
+  },
+  {
+    "name": "Hofsós",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Hofs%C3%B3s"
+  },
+  {
+    "name": "Hella",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Hella"
+  },
+  {
+    "name": "Heiðarbær",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Hei%C3%B0arb%C3%A6r"
+  },
+  {
+    "name": "Grundarfjörður",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Grundarfj%C3%B6r%C3%B0ur"
+  },
+  {
+    "name": "Grenivíkurlaug",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Greniv%C3%ADkurlaug"
+  },
+  {
+    "name": "Glerárlaug",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Gler%C3%A1rlaug"
+  },
+  {
+    "name": "Flúðir",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Fl%C3%BA%C3%B0ir"
+  },
+  {
+    "name": "Flateyri",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Flateyri"
+  },
+  {
+    "name": "Fáskrúðsfjörður",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/F%C3%A1skr%C3%BA%C3%B0sfj%C3%B6r%C3%B0ur"
+  },
+  {
+    "name": "Eskifjörður",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Eskifj%C3%B6r%C3%B0ur"
+  },
+  {
+    "name": "Dalslaug",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Dalslaug"
+  },
+  {
+    "name": "Breiðholtslaug",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Brei%C3%B0holtslaug"
+  },
+  {
+    "name": "Bolungarvík",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/Bolungarv%C3%ADk"
+  },
+  {
+    "name": "Ásvallalaug",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/%C3%81svallalaug"
+  },
+  {
+    "name": "Ásgarðslaug",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/%C3%81sgar%C3%B0slaug"
+  },
+  {
+    "name": "Árbæjarlaug",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/%C3%81rb%C3%A6jarlaug"
+  },
+  {
+    "name": "Álftaneslaug",
+    "categoryId": 3,
+    "imageURL": "https://res.cloudinary.com/dv17kz61z/image/upload/%C3%81lftaneslaug"
   }
 ]
