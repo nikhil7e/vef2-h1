@@ -160,32 +160,44 @@ async function setup() {
     }
   }
 
+  // req.body.categoryId = 1;
+
   let newQuestion = await prisma.questions.create({
     data: {
+      firstItemId: 1,
+      secondItemId: 2,
       categoryId: 1,
     },
   });
 
   newQuestion = await prisma.questions.create({
     data: {
+      firstItemId: 8,
+      secondItemId: 10,
       categoryId: 2,
     },
   });
 
   newQuestion = await prisma.questions.create({
     data: {
+      firstItemId: 23,
+      secondItemId: 47,
       categoryId: 3,
     },
   });
 
   newQuestion = await prisma.questions.create({
     data: {
+      firstItemId: 31,
+      secondItemId: 45,
       categoryId: 3,
     },
   });
 
   newQuestion = await prisma.questions.create({
     data: {
+      firstItemId: 62,
+      secondItemId: 70,
       categoryId: 3,
     },
   });
