@@ -51,11 +51,27 @@ async function setup() {
   const indexFile = await readFile(join(DATA_DIR, 'index.json'));
   const indexData = parseJson(indexFile.toString('utf-8'));
 
-  const testCategory = await prisma.category.create({
+  const drinkcategory = await prisma.category.create({
     data: {
-      name: 'testName',
-      questionText: 'text',
-      description: 'desc',
+      name: 'Sugar free Energy Drinks',
+      questionText: 'Which of these do you prefer?',
+      description: 'Sugar-free energy drinks',
+    },
+  });
+
+  const biocategory = await prisma.category.create({
+    data: {
+      name: 'Icelandic cinemas',
+      questionText: 'Which of these do you prefer?',
+      description: 'Icelandic cinemas :)',
+    },
+  });
+
+  const swimmingpoolscategory = await prisma.category.create({
+    data: {
+      name: 'Icelandic swimming pools',
+      questionText: 'Which of these do you prefer?',
+      description: 'Icelandic swimming pools :)',
     },
   });
 
