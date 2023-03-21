@@ -1,10 +1,12 @@
 import { describe, expect, test } from '@jest/globals';
 import { deleteAndParse, fetchAndParse, postAndParse } from './utils';
 
+const token = null
+
 describe('integration', () => {
   describe('/users', () => {
     test('GET /users returns 200', async () => {
-      const response = await fetchAndParse('/departments/');
+      const response = await fetchAndParse('/users/', token);
       console.log(response.result)
       expect(response.result).toBe("admin");
     });
@@ -16,7 +18,7 @@ describe('integration', () => {
       const response = await postAndParse('/departments/', {
         title,
         description,
-      });
+      }, token);
 
       expect(response.status).toBe(200);
       expect(response.result.title).toBe(title);
@@ -29,9 +31,9 @@ describe('integration', () => {
       const { result } = await postAndParse('/departments/', {
         title,
         description,
-      });
+      }, token);
 
-      const response = await fetchAndParse(`/departments/${result.slug}/`);
+      const response = await fetchAndParse(`/departments/${result.slug}/`, token);
 
       expect(response.status).toBe(200);
       expect(response.result.title).toBe(title);
@@ -49,7 +51,8 @@ describe('integration', () => {
 
       const response = await postAndParse(
         `/departments/hagfradideild/courses/`,
-        data
+        data,
+        token
       );
 
       expect(response.status).toBe(200);
@@ -74,14 +77,16 @@ describe('integration', () => {
 
       const { result } = await postAndParse(
         '/departments/hagfradideild/courses/',
-        data
+        data, 
+        token
       );
 
       expect(result.number).toBe(data.number);
 
       const response = await deleteAndParse(
         `/departments/hagfradideild/courses/${result.slug}`,
-        null
+        null,
+        token
       );
 
       expect(response.status).toBe(204);

@@ -12,22 +12,26 @@ type ResultAndStatus = { result: any; status: number };
 async function methodAndParse(
   method: string,
   path: string,
-  data: any = null
+  data: any = null,
+  token: string | null = null
 ): Promise<ResultAndStatus> {
   const url = new URL(path, baseUrl);
 
-  const options: RequestInit = {
-    headers: {},
-  };
+  const headers: Record<string, string> = {};
 
   if (method !== 'GET') {
-    options.method = method;
+    headers['Content-Type'] = 'application/json';
   }
 
-  if (data) {
-    options.headers = { 'Content-Type': 'application/json' };
-    options.body = JSON.stringify(data);
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
   }
+
+  const options: RequestInit = {
+    method,
+    headers,
+    body: data ? JSON.stringify(data) : undefined,
+  };
 
   const result: Response = await fetch(url, options);
 
@@ -47,27 +51,30 @@ async function methodAndParse(
   };
 }
 
-export async function fetchAndParse(path: string): Promise<ResultAndStatus> {
-  return methodAndParse('GET', path);
+export async function fetchAndParse(path: string, token : string | null ): Promise<ResultAndStatus> {
+  return methodAndParse('GET', path, token);
 }
 
 export async function postAndParse(
   path: string,
-  data: any
+  data: any,
+  token: string | null
 ): Promise<ResultAndStatus> {
-  return methodAndParse('POST', path, data);
+  return methodAndParse('POST', path, data, token);
 }
 
 export async function patchAndParse(
   path: string,
-  data: any
+  data: any,
+  token: string | null
 ): Promise<ResultAndStatus> {
-  return methodAndParse('PATCH', path, data);
+  return methodAndParse('PATCH', path, data, token);
 }
 
 export async function deleteAndParse(
   path: string,
-  data: any
+  data: any,
+  token: string | null
 ): Promise<ResultAndStatus> {
-  return methodAndParse('DELETE', path, data);
+  return methodAndParse('DELETE', path, data, token);
 }
