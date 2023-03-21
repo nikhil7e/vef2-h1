@@ -19,19 +19,19 @@ async function methodAndParse(
 
   const headers: Record<string, string> = {};
 
+  const options: RequestInit = {
+    method,
+    headers,
+  };
+
   if (method !== 'GET') {
     headers['Content-Type'] = 'application/json';
+    options.body = data ? JSON.stringify(data) : undefined
   }
 
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
-
-  const options: RequestInit = {
-    method,
-    headers,
-    body: data ? JSON.stringify(data) : undefined,
-  };
 
   const result: Response = await fetch(url, options);
 
@@ -52,7 +52,7 @@ async function methodAndParse(
 }
 
 export async function fetchAndParse(path: string, token : string | null ): Promise<ResultAndStatus> {
-  return methodAndParse('GET', path, token);
+  return methodAndParse('GET', path, {} ,token);
 }
 
 export async function postAndParse(
@@ -77,4 +77,16 @@ export async function deleteAndParse(
   token: string | null
 ): Promise<ResultAndStatus> {
   return methodAndParse('DELETE', path, data, token);
+}
+
+export async function loginAndGetToken(username : string, password : string): Promise<string> {
+  const path = '/login';
+  const data = { username, password };
+  const { result, status } = await methodAndParse('POST', path, data);
+
+  if (status !== 200 || !result.token) {
+    throw new Error('Invalid login response');
+  }
+
+  return result.token;
 }
