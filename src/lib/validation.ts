@@ -329,8 +329,8 @@ export const itemNameDoesNotExistValidator = ({ optional = false } = {}) => {
 
 export const categoryIdDoesExistValidator = ({ optional = false } = {}) => {
   const val = body('categoryId').custom(async (id) => {
-    if (await getItemByName(id)) {
-      return Promise.reject(new Error('ategory with id does not exist'));
+    if (!(await getCategoryById(Number.parseInt(id, 10)))) {
+      return Promise.reject(new Error('Category with id does not exist'));
     }
     return Promise.resolve();
   });
