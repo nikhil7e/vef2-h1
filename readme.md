@@ -3,18 +3,28 @@
 Sýnilausn á verkefni 3.
 
 ```bash
-createdb vef2-2023-v3
+createdb vef2-h1
 npm install
 npm run setup
-npm run dev # eða "npm start"
+npm run dev
+npm run test:unit # keyrir unit test
 ```
 
 Hægt að prófa request með því að importa `v3.postman.json` inn í Postman.
 
-## TODO
+### Contributors
 
-- [ ] Test
-- [ ] `DELETE` og eyða fyrst áföngum
+nikhil7
+tomaskri
+Jónas Hákon Kjartansson
+eddi555
+
+### Admin user
+
+username: admin
+password: 123
+
+### TEST
 
 # API Documentation
 
@@ -46,6 +56,10 @@ Returns details about the admin user.
 
 Deletes the user with the specified `userId`.
 
+### `PATCH /users/:userId`
+
+Updates the user with the specified `userId`. The request body should contain the new properties to be updated.
+
 ## Items
 
 ### `GET /items`
@@ -64,6 +78,10 @@ Creates a new item.
 
 Deletes the item with the specified `itemId`.
 
+### `PATCH /items/:itemId`
+
+Updates the item with the specified `itemId`. The request body should contain the new properties to be updated.
+
 ## Questions
 
 ### `GET /questions`
@@ -74,6 +92,10 @@ Returns a list of all questions.
 
 Returns the question with the specified `questionId`.
 
+### `POST /questions/:questionId/:itemId`
+
+Adds a vote to the item with the specified `itemId` for the question with the specified `questionId`.
+
 ### `POST /questions`
 
 Creates a new question.
@@ -81,6 +103,10 @@ Creates a new question.
 ### `DELETE /questions/:questionId`
 
 Deletes the question with the specified `questionId`.
+
+### `PATCH /questions/:questionId`
+
+Updates the question with the specified `questionId`. The request body should contain the new properties to be updated.
 
 ## Categories
 
@@ -99,3 +125,7 @@ Creates a new category.
 ### `DELETE /categories/:categoryId`
 
 Deletes the category with the specified `categoryId`.
+
+### `PATCH /categories/:categoryId`
+
+Updates the category with the specified `categoryId`. The request body should contain the new properties to be updated.
