@@ -7,7 +7,7 @@ createdb vef2-h1
 npm install
 npm run setup
 npm run dev
-npm run test:unit # keyrir unit test
+npm run test # keyrir integration test
 ```
 
 Hægt að prófa request með því að importa `v3.postman.json` inn í Postman.
@@ -28,7 +28,7 @@ password: 123
 
 # API Documentation
 
-This API provides endpoints for managing users, items, questions, categories, departments, and courses.
+This API provides endpoints for managing users, items, questions and categories.
 
 ## Users
 
