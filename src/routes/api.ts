@@ -32,6 +32,7 @@ import {
   deleteQuestion,
   getQuestion,
   getQuestions,
+  patchQuestion,
   voteItem,
 } from './questions.js';
 import {
@@ -125,6 +126,7 @@ router.get('/questions/:questionId', getQuestion);
 router.post('/questions/:questionId/:itemId', voteItem);
 router.post('/questions', createQuestion);
 router.delete('/questions/:questionId', deleteQuestion);
+router.patch('/questions/:questionId', patchQuestion);
 
 // Categories
 router.get('/categories', getCategories);
