@@ -51,7 +51,10 @@ async function methodAndParse(
   };
 }
 
-export async function fetchAndParse(path: string, token : string | null ): Promise<ResultAndStatus> {
+export async function fetchAndParse(
+  path: string, 
+  token : string | null 
+  ): Promise<ResultAndStatus> {
   return methodAndParse('GET', path, {} ,token);
 }
 
