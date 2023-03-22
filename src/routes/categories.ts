@@ -43,7 +43,7 @@ async function getCategoriesHandler(
 ): Promise<Response> {
   try {
     const page = Number(req.query.page) || 1; // set default page to 1 if not provided
-    const perPage = 2; // set number of items per page
+    const perPage = 10; // set number of items per page
     const skip = (page - 1) * perPage; // calculate the number of items to skip
 
     const [categories, totalCategories] = await Promise.all([
