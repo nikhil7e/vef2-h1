@@ -8,7 +8,7 @@ import {
   itemNameDoesNotExistValidator,
   stringValidator,
   validationCheck,
-  xssSanitizerMany,
+  xssSanitizerMany
 } from '../lib/validation.js';
 import { getImageUrl } from '../setup/genImage.js';
 import { requireAdminAuthentication } from './users.js';

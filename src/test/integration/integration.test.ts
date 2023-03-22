@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import { fetchAndParse, loginAndGetToken, postAndParse } from './utils';
+import { deleteAndParse, fetchAndParse, loginAndGetToken, postAndParse } from './utils';
 
 let adminToken:string;
 
@@ -8,28 +8,32 @@ describe('integration', () => {
     test('POST /login returns token with admin privileges', async () => {
       adminToken = await loginAndGetToken('admin', '123');
       const users = await fetchAndParse('/users/', adminToken);
-      expect(users.result[0].admin).toBe(true);
+      expect(users.result.items[0].admin).toBe(true);
     });
     test('POST /login returns token with non-admin privileges', async () => {
       const token = await loginAndGetToken('Eddi', 'eddipass');
       const users = await fetchAndParse('/users/', token);
-      expect(users.result[0].admin).toBe(false);
+      expect(users.result.error).toBe("unauthorized admin access");
     });
   });
   describe('/items', () => {
     test('POST /items should put an object into the database if user has admin privileges', async () => {
-      await postAndParse('/users/', {
+      await postAndParse('/items/', {
+        name: "testItem",
+        categoryId: 1,
+        imageURL: ""
+      } ,adminToken);
+      const items = await (await fetchAndParse('/items/', adminToken)).result;
+      expect(items.items).toHaveLength(5);
+    });
+    test(' /DELETE items should reduce the number of items in our database', async () => {
+      await deleteAndParse('/items/', {
         name: "testUser",
         categoryId: 1,
         imageURL: ""
       } ,adminToken);
-      const users = await (await fetchAndParse('/users/', adminToken)).result;
-      expect(users).toHaveLength(5);
-    });
-    test('POST /login returns token with non-admin privelidges', async () => {
-      const token = await loginAndGetToken('Eddi', 'eddipass');
-      const users = await fetchAndParse('/users/', token);
-      expect(users.result[0].admin).toBe(false);
+      const items = await (await fetchAndParse('/items/', adminToken)).result;
+      expect(items.items).toHaveLength(4);
     });
   });
   
