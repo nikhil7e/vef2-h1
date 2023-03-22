@@ -17,25 +17,72 @@ const prisma = new PrismaClient();
 
 const questionFields = ['categoryId'];
 
-async function getQuestionsHandler(req: Request, res: Response) {
-  const questions = await prisma.questions.findMany({
-    where: {},
-    include: {
-      category: true,
-      firstItem: true,
-      secondItem: true,
-      firstOptionAnsweredUsers: true,
-      secondOptionAnsweredUsers: true,
-    },
-  });
-
-  if (!questions) {
-    return res.status(201).json({ error: 'No questions exist' });
-  }
-
-  return res.status(200).json(questions);
+interface PaginationLinks {
+  self: string;
+  next?: string;
+  prev?: string;
 }
 
+async function getQuestionsHandler(
+  req: Request,
+  res: Response
+): Promise<Response> {
+  try {
+    const page = Number(req.query.page) || 1; // set default page to 1 if not provided
+    const perPage = 10; // set number of items per page
+    const skip = (page - 1) * perPage; // calculate the number of items to skip
+
+    const [questions, totalQuestions] = await Promise.all([
+      prisma.questions.findMany({
+        take: perPage, // limit the number of items returned to perPage
+        skip, // skip the first 'skip' number of items
+        where: {},
+        include: {
+          category: true,
+          firstItem: true,
+          secondItem: true,
+          firstOptionAnsweredUsers: true,
+          secondOptionAnsweredUsers: true,
+        },
+      }),
+      prisma.questions.count(), // get total number of questions
+    ]);
+
+    if (!questions || questions.length === 0) {
+      return res.status(201).json({ error: 'No questions exist' });
+    }
+
+    const totalPages = Math.ceil(totalQuestions / perPage); // calculate the total number of pages
+
+    // construct pagination links
+    const links: PaginationLinks = {
+      self: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
+    };
+    if (page < totalPages) {
+      links.next = `${req.protocol}://${req.get('host')}${req.baseUrl}?page=${
+        page + 1
+      }`;
+    }
+    if (page > 1) {
+      links.prev = `${req.protocol}://${req.get('host')}${req.baseUrl}?page=${
+        page - 1
+      }`;
+    }
+
+    // return paginated response
+    return res.status(200).json({
+      items: questions,
+      links,
+      page,
+      perPage,
+      totalQuestions,
+      totalPages,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
 export const getQuestions = [requireAdminAuthentication, getQuestionsHandler];
 
 async function getQuestionHandler(req: Request, res: Response) {
@@ -311,7 +358,7 @@ export const patchQuestion = [
   atLeastOneBodyValueValidator(questionFields),
   // itemIdDoesExistValidator,
   // itemNameDoesNotExistValidator({ optional: true }),
-  categoryIdDoesExistValidator({ optional: false }),
+  categoryIdDoesExistValidator.optional(),
   xssSanitizerMany(questionFields),
   validationCheck,
   genericSanitizerMany(questionFields),

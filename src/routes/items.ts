@@ -17,21 +17,66 @@ const prisma = new PrismaClient();
 
 const itemFields = ['name', 'categoryId'];
 
+interface PaginationLinks {
+  self: string;
+  next?: string;
+  prev?: string;
+}
+
 async function getItemsHandler(req: Request, res: Response) {
-  const items = await prisma.items.findMany({
-    where: {},
-    include: {
-      category: true,
-      firstOptionQuestions: true,
-      secondOptionQuestions: true,
-    },
-  });
+  try {
+    const page = Number(req.query.page) || 1; // set default page to 1 if not provided
+    const perPage = 10; // set number of items per page
+    const skip = (page - 1) * perPage; // calculate the number of items to skip
 
-  if (!items) {
-    return res.status(201).json({ error: 'No items exist' });
+    const [items, totalItems] = await Promise.all([
+      prisma.items.findMany({
+        take: perPage, // limit the number of items returned to perPage
+        skip, // skip the first 'skip' number of items
+        where: {},
+        include: {
+          category: true,
+          firstOptionQuestions: true,
+          secondOptionQuestions: true,
+        },
+      }),
+      prisma.items.count(), // get total number of items
+    ]);
+
+    if (!items || items.length === 0) {
+      return res.status(404).json({ error: 'No items exist' });
+    }
+
+    const totalPages = Math.ceil(totalItems / perPage); // calculate the total number of pages
+
+    // construct pagination links
+    const links: PaginationLinks = {
+      self: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
+    };
+    if (page < totalPages) {
+      links.next = `${req.protocol}://${req.get('host')}${req.baseUrl}?page=${
+        page + 1
+      }`;
+    }
+    if (page > 1) {
+      links.prev = `${req.protocol}://${req.get('host')}${req.baseUrl}?page=${
+        page - 1
+      }`;
+    }
+
+    // return paginated response
+    return res.status(200).json({
+      items,
+      links,
+      page,
+      perPage,
+      totalItems,
+      totalPages,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
-
-  return res.status(200).json(items);
 }
 
 export const getItems = [requireAdminAuthentication, getItemsHandler];
@@ -67,12 +112,14 @@ export const getItem = [
 async function createItemHandler(req: Request, res: Response) {
   const { name, categoryId } = req.body;
 
+  const cId = Number.parseInt(categoryId, 10);
+
   const imageURL = await getImageUrl(name);
 
   const item = await prisma.items.create({
     data: {
       name,
-      categoryId,
+      categoryId: cId,
       imageURL,
     },
   });
@@ -168,8 +215,8 @@ export const patchItem = [
   }),
   atLeastOneBodyValueValidator(itemFields),
   itemIdDoesExistValidator,
-  itemNameDoesNotExistValidator({ optional: true }),
-  categoryIdDoesExistValidator({ optional: true }),
+  itemNameDoesNotExistValidator.optional(),
+  categoryIdDoesExistValidator.optional(),
   xssSanitizerMany(itemFields),
   validationCheck,
   genericSanitizerMany(itemFields),

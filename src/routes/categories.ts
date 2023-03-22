@@ -15,20 +15,84 @@ const prisma = new PrismaClient();
 
 const categoryFields = ['name', 'description', 'questionText'];
 
-async function getCategoriesHandler(req: Request, res: Response) {
-  const categories = await prisma.category.findMany({
-    where: {},
-    include: {
-      items: true,
-      questions: true,
-    },
-  });
+// async function getCategoriesHandler(req: Request, res: Response) {
+//   const categories = await prisma.category.findMany({
+//     where: {},
+//     include: {
+//       items: true,
+//       questions: true,
+//     },
+//   });J
 
-  if (!categories) {
-    return res.status(201).json({ error: 'No categories exist' });
+//   if (!categories) {
+//     return res.status(201).json({ error: 'No categories exist' });
+//   }
+
+//   return res.status(200).json(categories);
+// }
+
+interface PaginationLinks {
+  self: string;
+  next?: string;
+  prev?: string;
+}
+
+async function getCategoriesHandler(
+  req: Request,
+  res: Response
+): Promise<Response> {
+  try {
+    const page = Number(req.query.page) || 1; // set default page to 1 if not provided
+    const perPage = 2; // set number of items per page
+    const skip = (page - 1) * perPage; // calculate the number of items to skip
+
+    const [categories, totalCategories] = await Promise.all([
+      prisma.category.findMany({
+        take: perPage, // limit the number of items returned to perPage
+        skip, // skip the first 'skip' number of items
+        where: {},
+        include: {
+          items: true,
+          questions: true,
+        },
+      }),
+      prisma.category.count(), // get total number of categories
+    ]);
+
+    if (!categories || categories.length === 0) {
+      return res.status(201).json({ error: 'No categories exist' });
+    }
+
+    const totalPages = Math.ceil(totalCategories / perPage); // calculate the total number of pages
+
+    // construct pagination links
+    const links: PaginationLinks = {
+      self: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
+    };
+    if (page < totalPages) {
+      links.next = `${req.protocol}://${req.get('host')}${req.baseUrl}?page=${
+        page + 1
+      }`;
+    }
+    if (page > 1) {
+      links.prev = `${req.protocol}://${req.get('host')}${req.baseUrl}?page=${
+        page - 1
+      }`;
+    }
+
+    // return paginated response
+    return res.status(200).json({
+      items: categories,
+      links,
+      page,
+      perPage,
+      totalCategories,
+      totalPages,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
-
-  return res.status(200).json(categories);
 }
 
 export const getCategories = [requireAdminAuthentication, getCategoriesHandler];
@@ -160,7 +224,7 @@ export const patchCategory = [
   }),
   atLeastOneBodyValueValidator(categoryFields),
   categoryIdParamDoesExistValidator,
-  categoryNameDoesNotExistValidator({ optional: true }),
+  categoryNameDoesNotExistValidator.optional(),
   xssSanitizerMany(categoryFields),
   validationCheck,
   genericSanitizerMany(categoryFields),

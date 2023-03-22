@@ -277,21 +277,18 @@ export const courseTitleDoesNotExistValidator = body('title').custom(
 //   }
 // );
 
-export const userNameDoesNotExistValidator = ({ optional = false } = {}) => {
-  const val = body('username').custom(async (username) => {
+export const userNameDoesNotExistValidator = body('username').custom(
+  async (username) => {
     if (await getUserByName(username)) {
       return Promise.reject(
         new Error('A user with this username already exists')
       );
     }
     return Promise.resolve();
-  });
-
-  if (optional) {
-    return val.optional();
   }
-  return val;
-};
+);
+
+// return val;
 
 export const userNameDoesExistValidator = body('username').custom(
   async (username) => {
@@ -313,33 +310,23 @@ export const courseIdDoesNotExistValidator = body('courseId').custom(
   }
 );
 
-export const itemNameDoesNotExistValidator = ({ optional = false } = {}) => {
-  const val = body('name').custom(async (name) => {
+export const itemNameDoesNotExistValidator = body('name').custom(
+  async (name) => {
     if (await getItemByName(name)) {
       return Promise.reject(new Error('item with name already exists'));
     }
     return Promise.resolve();
-  });
-
-  if (optional) {
-    return val.optional();
   }
-  return val;
-};
+);
 
-export const categoryIdDoesExistValidator = ({ optional = false } = {}) => {
-  const val = body('categoryId').custom(async (id) => {
+export const categoryIdDoesExistValidator = body('categoryId').custom(
+  async (id) => {
     if (!(await getCategoryById(Number.parseInt(id, 10)))) {
       return Promise.reject(new Error('Category with id does not exist'));
     }
     return Promise.resolve();
-  });
-
-  if (optional) {
-    return val.optional();
   }
-  return val;
-};
+);
 
 // export const categoryNameDoesNotExistValidator = body('name').custom(
 //   async (name) => {
@@ -350,21 +337,14 @@ export const categoryIdDoesExistValidator = ({ optional = false } = {}) => {
 //   }
 // );
 
-export const categoryNameDoesNotExistValidator = ({
-  optional = false,
-} = {}) => {
-  const val = body('name').custom(async (name) => {
+export const categoryNameDoesNotExistValidator = body('name').custom(
+  async (name) => {
     if (!(await getCategoryByName(name))) {
       return Promise.resolve();
     }
     return Promise.reject(new Error('category with name already exists'));
-  });
-
-  if (optional) {
-    return val.optional();
   }
-  return val;
-};
+);
 
 export const categoryIdParamDoesExistValidator = param('categoryId').custom(
   async (id) => {

@@ -173,7 +173,7 @@ async function signupHandler(req: Request, res: Response) {
   const payload = { id: user.id };
   const tokenOptions = { expiresIn: tokenLifetime };
   const token = jwt.sign(payload, jwtOptions.secretOrKey, tokenOptions);
-  return res.json({ token });
+  return res.status(201).json({ token });
 }
 
 export const signup = [
@@ -191,20 +191,65 @@ export const getAdminDetails = [
   getAdminDetailsHandler,
 ];
 
-async function getUsersHandler(req: Request, res: Response) {
-  const user = await prisma.users.findMany({
-    where: {},
-    include: {
-      firstOptionAnsweredQuestions: true,
-      secondOptionAnsweredQuestions: true,
-    },
-  });
+interface PaginationLinks {
+  self: string;
+  next?: string;
+  prev?: string;
+}
 
-  if (!user) {
-    return res.status(201).json({ error: 'No users exist' });
+async function getUsersHandler(req: Request, res: Response): Promise<Response> {
+  try {
+    const page = Number(req.query.page) || 1; // set default page to 1 if not provided
+    const perPage = 10; // set number of items per page
+    const skip = (page - 1) * perPage; // calculate the number of items to skip
+
+    const [usersResult, totalUsers] = await Promise.all([
+      prisma.users.findMany({
+        take: perPage, // limit the number of items returned to perPage
+        skip, // skip the first 'skip' number of items
+        where: {},
+        include: {
+          firstOptionAnsweredQuestions: true,
+          secondOptionAnsweredQuestions: true,
+        },
+      }),
+      prisma.users.count(), // get total number of users
+    ]);
+
+    if (!usersResult || usersResult.length === 0) {
+      return res.status(404).json({ error: 'No users exist' });
+    }
+
+    const totalPages = Math.ceil(totalUsers / perPage); // calculate the total number of pages
+
+    // construct pagination links
+    const links: PaginationLinks = {
+      self: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
+    };
+    if (page < totalPages) {
+      links.next = `${req.protocol}://${req.get('host')}${req.baseUrl}?page=${
+        page + 1
+      }`;
+    }
+    if (page > 1) {
+      links.prev = `${req.protocol}://${req.get('host')}${req.baseUrl}?page=${
+        page - 1
+      }`;
+    }
+
+    // return paginated response
+    return res.status(200).json({
+      items: usersResult,
+      links,
+      page,
+      perPage,
+      totalUsers,
+      totalPages,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
-
-  return res.status(200).json(user);
 }
 
 export const getUsers = [requireAdminAuthentication, getUsersHandler];
@@ -297,7 +342,7 @@ export const patchUser = [
     optional: true,
   }),
   atLeastOneBodyValueValidator(userFields),
-  userNameDoesNotExistValidator({ optional: true }),
+  userNameDoesNotExistValidator.optional(),
   xssSanitizerMany(userFields),
   validationCheck,
   genericSanitizerMany(userFields),
