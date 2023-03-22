@@ -24,7 +24,7 @@ import { Course } from '../types.js';
 export async function listCourses(
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) {
   const { slug } = req.params;
 
@@ -46,7 +46,7 @@ export async function listCourses(
 export async function getCourse(
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) {
   const { slug, courseId } = req.params;
 
@@ -68,7 +68,7 @@ export async function getCourse(
 export async function createCoursesHandler(
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) {
   const { slug } = req.params;
   const { courseId, title, units, semester, level, url } = req.body;
@@ -91,7 +91,7 @@ export async function createCoursesHandler(
   const createdCourse = await insertCourse(
     courseToCreate,
     department.id,
-    false,
+    false
   );
 
   if (!createdCourse) {
@@ -120,39 +120,10 @@ export const createCourse = [
   createCoursesHandler,
 ].flat();
 
-export const updateCourse = [
-  stringValidator({ field: 'courseId', maxLength: 16, optional: true }),
-  stringValidator({ field: 'title', maxLength: 64, optional: true }),
-  body('units')
-    .isFloat({ min: 0.5, max: 100 })
-    .withMessage('units must be a number between 0.5 and 100')
-    .optional(),
-  semesterValidator({ field: 'semester', optional: true }),
-  stringValidator({
-    field: 'level',
-    valueRequired: false,
-    maxLength: 128,
-    optional: true,
-  }),
-  stringValidator({
-    field: 'url',
-    valueRequired: false,
-    maxLength: 256,
-    optional: true,
-  }),
-  atLeastOneBodyValueValidator(courseFields),
-  courseTitleDoesNotExistValidator,
-  courseIdDoesNotExistValidator,
-  xssSanitizerMany(courseFields),
-  validationCheck,
-  genericSanitizerMany(courseFields),
-  updateCourseHandler,
-].flat();
-
 export async function updateCourseHandler(
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) {
   const { slug, courseId } = req.params;
   const department = await getDepartmentBySlug(slug);
@@ -204,10 +175,39 @@ export async function updateCourseHandler(
   return res.json(updatedCourse);
 }
 
+export const updateCourse = [
+  stringValidator({ field: 'courseId', maxLength: 16, optional: true }),
+  stringValidator({ field: 'title', maxLength: 64, optional: true }),
+  body('units')
+    .isFloat({ min: 0.5, max: 100 })
+    .withMessage('units must be a number between 0.5 and 100')
+    .optional(),
+  semesterValidator({ field: 'semester', optional: true }),
+  stringValidator({
+    field: 'level',
+    valueRequired: false,
+    maxLength: 128,
+    optional: true,
+  }),
+  stringValidator({
+    field: 'url',
+    valueRequired: false,
+    maxLength: 256,
+    optional: true,
+  }),
+  atLeastOneBodyValueValidator(courseFields),
+  courseTitleDoesNotExistValidator,
+  courseIdDoesNotExistValidator,
+  xssSanitizerMany(courseFields),
+  validationCheck,
+  genericSanitizerMany(courseFields),
+  updateCourseHandler,
+].flat();
+
 export async function deleteCourse(
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) {
   const { slug, courseId } = req.params;
 

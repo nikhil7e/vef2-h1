@@ -7,9 +7,9 @@
   "scripts": {
     "dev": "nodemon",
     "start": "node --loader ts-node/esm ./src/app.ts",
-    "setup": "npx prisma migrate reset && npx prisma migrate dev && npx prisma generate && node --loader ts-node/esm ./src/setup/setup.ts",
+    "setup": "npx prisma migrate reset -f && npx prisma migrate dev && npx prisma generate && node --loader ts-node/esm ./src/setup/setup.ts",
     "lint": "eslint ./src",
-    "setup-production": "npx prisma migrate deploy && npx prisma generate && node --loader ts-node/esm ./src/setup/generate.ts",
+    "setup-production": "npx prisma migrate reset -f && npx prisma migrate deploy && npx prisma generate && node --loader ts-node/esm ./src/setup/setup.ts",
     "lint:eslint": "eslint ./src/**/*.ts",
     "test": "npm run setup && NODE_ENV=test NODE_OPTIONS='--experimental-vm-modules' dotenv -e .env.test -- jest --config=jest.config.ts",
     "test-watch": "NODE_ENV=test NODE_OPTIONS='--experimental-vm-modules' dotenv -e .env.test -- jest ./*.test.ts"
