@@ -24,6 +24,8 @@ password: 123
 
 ### TEST
 
+Tests can be run with npm run test or npm run test-watch for a more detailed descripton. For the tests to run correctly you will need to have npm run dev running in another terminal to simulate the server side.
+
 # API Documentation
 
 This API provides endpoints for managing users, items, questions and categories.
