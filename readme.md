@@ -1,7 +1,5 @@
 # Vefforritun 2, 2023, hópverkefni 1
 
-Sýnilausn á hópverkefni 1.
-
 ```bash
 createdb vef2-h1
 npm install
