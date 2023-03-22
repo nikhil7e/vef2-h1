@@ -1,6 +1,6 @@
-# Vefforritun 2, 2023, verkefni 3 sýnilausn
+# Vefforritun 2, 2023, hópverkefni 1
 
-Sýnilausn á verkefni 3.
+Sýnilausn á hópverkefni 1.
 
 ```bash
 createdb vef2-h1
@@ -10,7 +10,7 @@ npm run dev
 npm run test # keyrir integration test
 ```
 
-Hægt að prófa request með því að importa `v3.postman.json` inn í Postman.
+Hægt að prófa request með því að importa `h1.postman.json` inn í Postman.
 
 ### Contributors
 
