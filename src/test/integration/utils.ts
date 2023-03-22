@@ -26,7 +26,7 @@ async function methodAndParse(
 
   if (method !== 'GET') {
     headers['Content-Type'] = 'application/json';
-    options.body = data ? JSON.stringify(data) : undefined
+    options.body = JSON.stringify(data)
   }
 
   if (token) {

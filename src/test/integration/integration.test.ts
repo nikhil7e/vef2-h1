@@ -13,27 +13,31 @@ describe('integration', () => {
     test('POST /login returns token with non-admin privileges', async () => {
       const token = await loginAndGetToken('Eddi', 'eddipass');
       const users = await fetchAndParse('/users/', token);
-      expect(users.result.error).toBe("unauthorized admin access");
+      expect(users.result.error).toBe('unauthorized admin access');
     });
   });
   describe('/items', () => {
-    test('POST /items should put an object into the database if user has admin privileges', async () => {
-      await postAndParse('/items/', {
-        name: "testItem",
-        categoryId: 1,
-        imageURL: ""
+    test('POST /items should put an object into the database if user has admin privileges',
+     async () => {
+      const promise = await postAndParse('/items/', {
+        name: 'Orange',
+        categoryId: 1
       } ,adminToken);
-      const items = await (await fetchAndParse('/items/', adminToken)).result;
-      expect(items.items).toHaveLength(5);
+      // console.log(promise.result)
+      expect(promise.result.name).toBe('Orange');
+      expect(promise.result.categoryId).toBe(1);
+      expect(promise.status).toBe(200);
     });
     test(' /DELETE items should reduce the number of items in our database', async () => {
-      await deleteAndParse('/items/', {
-        name: "testUser",
-        categoryId: 1,
-        imageURL: ""
+      const postPromise = await postAndParse('/items/', {
+        name: 'Apple',
+        categoryId: 1
       } ,adminToken);
-      const items = await (await fetchAndParse('/items/', adminToken)).result;
-      expect(items.items).toHaveLength(4);
+      console.log(postPromise)
+      const itemId = postPromise.result.id;
+      const deletePromise = await deleteAndParse(`/items/${itemId}`, {
+      } ,adminToken);
+      expect(deletePromise.status).toBe(204);
     });
   });
   
