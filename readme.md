@@ -12,7 +12,7 @@ Hægt að prófa request með því að importa `h1.postman.json` inn í Postman
 
 ### Contributors
 
-nikhil7
+nikhil7e
 tomaskri
 Jónas Hákon Kjartansson
 eddi555
