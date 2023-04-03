@@ -156,6 +156,13 @@ async function createQuestionHandler(req: Request, res: Response) {
       secondItemId: secondItem[0].id,
       categoryId,
     },
+    include: {
+      category: true,
+      firstItem: true,
+      secondItem: true,
+      firstOptionAnsweredUsers: true,
+      secondOptionAnsweredUsers: true,
+    },
   });
 
   if (!question) {
