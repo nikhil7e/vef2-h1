@@ -20,7 +20,7 @@ dotenv.config();
 const {
   // PORT: port = 3000,
   JWT_SECRET: jwtSecret,
-  TOKEN_LIFETIME: tokenLifetime = 86400,
+  TOKEN_LIFETIME: tokenLifetime = '24h',
   DATABASE_URL: databaseUrl,
 } = process.env;
 
@@ -275,7 +275,7 @@ async function getUserHandler(req: Request, res: Response) {
 }
 
 export const getUser = [
-  requireAdminAuthentication,
+  requireAuthentication,
   userIdDoesExistValidator,
   validationCheck,
   getUserHandler,
