@@ -12,7 +12,7 @@ dotenv.config();
 const {
   PORT: port = 3000,
   JWT_SECRET: jwtSecret,
-  TOKEN_LIFETIME: tokenLifetime = 86400,
+  TOKEN_LIFETIME: tokenLifetime = '24h',
   DATABASE_URL: databaseUrl,
 } = process.env;
 
@@ -31,6 +31,7 @@ app.use(router);
 const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: jwtSecret,
+  tokenLifetime,
 };
 
 // async function strat(data: any, next: NextFunction) {
