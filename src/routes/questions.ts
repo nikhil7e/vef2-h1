@@ -242,6 +242,20 @@ async function voteItemHandler(req: Request, res: Response) {
         firstOptionAnsweredUsers: true,
       },
     });
+
+    await prisma.users.update({
+      where: { id: user.id },
+      data: {
+        firstOptionAnsweredQuestionsIds: {
+          push: qId,
+        },
+        // firstOptionAnsweredQuestions: {
+        //   connect: {
+        //     id: user.id,
+        //   },
+        // },
+      },
+    });
   } else if (question?.secondItemId === iId) {
     questionUpdated = await prisma.questions.update({
       where: { id: qId },
@@ -257,6 +271,20 @@ async function voteItemHandler(req: Request, res: Response) {
       },
       include: {
         secondOptionAnsweredUsers: true,
+      },
+    });
+
+    await prisma.users.update({
+      where: { id: user.id },
+      data: {
+        secondOptionAnsweredQuestionsIds: {
+          push: qId,
+        },
+        // secondOptionAnsweredQuestions: {
+        //   connect: {
+        //     id: user.id,
+        //   },
+        // },
       },
     });
   }
