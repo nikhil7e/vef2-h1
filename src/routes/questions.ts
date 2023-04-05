@@ -87,12 +87,12 @@ async function getQuestionsHandler(
       self: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
     };
     if (page < totalPages) {
-      links.next = `${req.protocol}://${req.get('host')}${req.baseUrl}?page=${
+      links.next = `${req.protocol}://${req.get('host')}${req.path}?page=${
         page + 1
       }`;
     }
     if (page > 1) {
-      links.prev = `${req.protocol}://${req.get('host')}${req.baseUrl}?page=${
+      links.prev = `${req.protocol}://${req.get('host')}${req.path}?page=${
         page - 1
       }`;
     }
