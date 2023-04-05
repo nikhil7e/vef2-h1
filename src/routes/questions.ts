@@ -41,8 +41,36 @@ async function getQuestionsHandler(
           category: true,
           firstItem: true,
           secondItem: true,
-          firstOptionAnsweredUsers: true,
-          secondOptionAnsweredUsers: true,
+          firstOptionAnsweredUsers: {
+            select: {
+              id: true,
+              admin: true,
+              username: true,
+              password: false,
+              score: true,
+              firstOptionAnsweredQuestions: true,
+              secondOptionAnsweredQuestions: true,
+              firstOptionAnsweredQuestionsIds: true,
+              secondOptionAnsweredQuestionsIds: true,
+              createdAt: true,
+              updatedAt: true,
+            },
+          },
+          secondOptionAnsweredUsers: {
+            select: {
+              id: true,
+              admin: true,
+              username: true,
+              password: false,
+              score: true,
+              firstOptionAnsweredQuestions: true,
+              secondOptionAnsweredQuestions: true,
+              firstOptionAnsweredQuestionsIds: true,
+              secondOptionAnsweredQuestionsIds: true,
+              createdAt: true,
+              updatedAt: true,
+            },
+          },
         },
       }),
       prisma.questions.count(), // get total number of questions
@@ -96,8 +124,36 @@ async function getQuestionHandler(req: Request, res: Response) {
       category: true,
       firstItem: true,
       secondItem: true,
-      firstOptionAnsweredUsers: true,
-      secondOptionAnsweredUsers: true,
+      firstOptionAnsweredUsers: {
+        select: {
+          id: true,
+          admin: true,
+          username: true,
+          password: false,
+          score: true,
+          firstOptionAnsweredQuestions: true,
+          secondOptionAnsweredQuestions: true,
+          firstOptionAnsweredQuestionsIds: true,
+          secondOptionAnsweredQuestionsIds: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
+      secondOptionAnsweredUsers: {
+        select: {
+          id: true,
+          admin: true,
+          username: true,
+          password: false,
+          score: true,
+          firstOptionAnsweredQuestions: true,
+          secondOptionAnsweredQuestions: true,
+          firstOptionAnsweredQuestionsIds: true,
+          secondOptionAnsweredQuestionsIds: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
     },
   });
 
@@ -160,8 +216,36 @@ async function createQuestionHandler(req: Request, res: Response) {
       category: true,
       firstItem: true,
       secondItem: true,
-      firstOptionAnsweredUsers: true,
-      secondOptionAnsweredUsers: true,
+      firstOptionAnsweredUsers: {
+        select: {
+          id: true,
+          admin: true,
+          username: true,
+          password: false,
+          score: true,
+          firstOptionAnsweredQuestions: true,
+          secondOptionAnsweredQuestions: true,
+          firstOptionAnsweredQuestionsIds: true,
+          secondOptionAnsweredQuestionsIds: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
+      secondOptionAnsweredUsers: {
+        select: {
+          id: true,
+          admin: true,
+          username: true,
+          password: false,
+          score: true,
+          firstOptionAnsweredQuestions: true,
+          secondOptionAnsweredQuestions: true,
+          firstOptionAnsweredQuestionsIds: true,
+          secondOptionAnsweredQuestionsIds: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
     },
   });
 
@@ -239,7 +323,21 @@ async function voteItemHandler(req: Request, res: Response) {
         },
       },
       include: {
-        firstOptionAnsweredUsers: true,
+        firstOptionAnsweredUsers: {
+          select: {
+            id: true,
+            admin: true,
+            username: true,
+            password: false,
+            score: true,
+            firstOptionAnsweredQuestions: true,
+            secondOptionAnsweredQuestions: true,
+            firstOptionAnsweredQuestionsIds: true,
+            secondOptionAnsweredQuestionsIds: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
       },
     });
 
@@ -270,7 +368,21 @@ async function voteItemHandler(req: Request, res: Response) {
         },
       },
       include: {
-        secondOptionAnsweredUsers: true,
+        secondOptionAnsweredUsers: {
+          select: {
+            id: true,
+            admin: true,
+            username: true,
+            password: false,
+            score: true,
+            firstOptionAnsweredQuestions: true,
+            secondOptionAnsweredQuestions: true,
+            firstOptionAnsweredQuestionsIds: true,
+            secondOptionAnsweredQuestionsIds: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
       },
     });
 

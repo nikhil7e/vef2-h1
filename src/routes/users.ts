@@ -208,9 +208,18 @@ async function getUsersHandler(req: Request, res: Response): Promise<Response> {
         take: perPage, // limit the number of items returned to perPage
         skip, // skip the first 'skip' number of items
         where: {},
-        include: {
+        select: {
+          id: true,
+          admin: true,
+          username: true,
+          password: false,
+          score: true,
           firstOptionAnsweredQuestions: true,
           secondOptionAnsweredQuestions: true,
+          firstOptionAnsweredQuestionsIds: true,
+          secondOptionAnsweredQuestionsIds: true,
+          createdAt: true,
+          updatedAt: true,
         },
       }),
       prisma.users.count(), // get total number of users
@@ -259,9 +268,18 @@ async function getUserHandler(req: Request, res: Response) {
 
   const user = await prisma.users.findFirst({
     where: { id: Number.parseInt(userId, 10) },
-    include: {
+    select: {
+      id: true,
+      admin: true,
+      username: true,
+      password: false,
+      score: true,
       firstOptionAnsweredQuestions: true,
       secondOptionAnsweredQuestions: true,
+      firstOptionAnsweredQuestionsIds: true,
+      secondOptionAnsweredQuestionsIds: true,
+      createdAt: true,
+      updatedAt: true,
     },
   });
 
@@ -330,7 +348,9 @@ async function patchUserHandler(req: Request, res: Response) {
     return res.status(400).json({ error: 'User could not be updated' });
   }
 
-  return res.status(200).json(userToCreate);
+  const { password: passwordHash, ...user } = userToCreate;
+
+  return res.status(200).json(user);
 }
 
 export const patchUser = [
