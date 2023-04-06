@@ -22,6 +22,7 @@ if (!jwtSecret || !databaseUrl) {
 }
 
 const app = express();
+app.enable('trust proxy');
 
 app.use(express.json());
 
