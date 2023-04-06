@@ -274,8 +274,12 @@ async function getUserHandler(req: Request, res: Response) {
       username: true,
       password: false,
       score: true,
-      firstOptionAnsweredQuestions: true,
-      secondOptionAnsweredQuestions: true,
+      firstOptionAnsweredQuestions: {
+        include: { firstItem: true, secondItem: true },
+      },
+      secondOptionAnsweredQuestions: {
+        include: { firstItem: true, secondItem: true },
+      },
       firstOptionAnsweredQuestionsIds: true,
       secondOptionAnsweredQuestionsIds: true,
       createdAt: true,
