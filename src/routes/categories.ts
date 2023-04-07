@@ -9,7 +9,7 @@ import {
   validationCheck,
   xssSanitizerMany,
 } from '../lib/validation.js';
-import { requireAdminAuthentication } from './users.js';
+import { requireAdminAuthentication, requireAuthentication } from './users.js';
 
 const prisma = new PrismaClient();
 
@@ -95,7 +95,7 @@ async function getCategoriesHandler(
   }
 }
 
-export const getCategories = [requireAdminAuthentication, getCategoriesHandler];
+export const getCategories = [requireAuthentication, getCategoriesHandler];
 
 async function getCategoryHandler(req: Request, res: Response) {
   const { categoryId } = req.params;
@@ -118,7 +118,7 @@ async function getCategoryHandler(req: Request, res: Response) {
 }
 
 export const getCategory = [
-  requireAdminAuthentication,
+  requireAuthentication,
   categoryIdParamDoesExistValidator,
   validationCheck,
   getCategoryHandler,

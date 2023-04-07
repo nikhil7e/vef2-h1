@@ -111,7 +111,7 @@ async function getQuestionsHandler(
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
-export const getQuestions = [requireAdminAuthentication, getQuestionsHandler];
+export const getQuestions = [requireAuthentication, getQuestionsHandler];
 
 async function getQuestionHandler(req: Request, res: Response) {
   const { questionId } = req.params;
@@ -167,7 +167,7 @@ async function getQuestionHandler(req: Request, res: Response) {
 }
 
 export const getQuestion = [
-  requireAdminAuthentication,
+  requireAuthentication,
   questionIdDoesExistValidator,
   validationCheck,
   getQuestionHandler,

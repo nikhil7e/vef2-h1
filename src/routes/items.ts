@@ -11,7 +11,7 @@ import {
   xssSanitizerMany,
 } from '../lib/validation.js';
 import { getImageUrl } from '../setup/genImage.js';
-import { requireAdminAuthentication } from './users.js';
+import { requireAdminAuthentication, requireAuthentication } from './users.js';
 
 const prisma = new PrismaClient();
 
@@ -79,7 +79,7 @@ async function getItemsHandler(req: Request, res: Response) {
   }
 }
 
-export const getItems = [requireAdminAuthentication, getItemsHandler];
+export const getItems = [requireAuthentication, getItemsHandler];
 
 async function getItemHandler(req: Request, res: Response) {
   const { itemId } = req.params;
@@ -103,7 +103,7 @@ async function getItemHandler(req: Request, res: Response) {
 }
 
 export const getItem = [
-  requireAdminAuthentication,
+  requireAuthentication,
   itemIdDoesExistValidator,
   validationCheck,
   getItemHandler,
