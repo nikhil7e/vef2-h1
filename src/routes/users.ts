@@ -177,6 +177,12 @@ async function signupHandler(req: Request, res: Response) {
 }
 
 export const signup = [
+  stringValidator({
+    field: 'username',
+  }),
+  stringValidator({
+    field: 'password',
+  }),
   userNameDoesNotExistValidator,
   validationCheck,
   signupHandler,
@@ -359,7 +365,12 @@ async function patchUserHandler(req: Request, res: Response) {
 
 export const patchUser = [
   requireAdminAuthentication,
-  stringValidator({ field: 'username', maxLength: 128, optional: true }),
+  stringValidator({
+    field: 'username',
+    valueRequired: false,
+    maxLength: 128,
+    optional: true,
+  }),
   stringValidator({
     field: 'password',
     maxLength: 128,

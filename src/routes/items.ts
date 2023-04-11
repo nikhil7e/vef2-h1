@@ -134,6 +134,9 @@ async function createItemHandler(req: Request, res: Response) {
 export const createItem = [
   requireAdminAuthentication,
   stringValidator({ field: 'name', maxLength: 128 }),
+  stringValidator({
+    field: 'categoryId',
+  }),
   itemNameDoesNotExistValidator,
   categoryIdDoesExistValidator,
   xssSanitizerMany(itemFields),
